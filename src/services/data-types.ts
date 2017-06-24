@@ -219,6 +219,7 @@ export interface InstitutionFilter {
     RSSDID: number | null;
     searchTxt: string;
     isStartsWith: boolean;
+    selectedAssignmentFilter: number;
     selectedStates: string[];
     selectedTypes: number[];
 }

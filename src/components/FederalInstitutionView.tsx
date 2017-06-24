@@ -52,8 +52,12 @@ export class FederalInstitutionView extends Component<FedInstitutionViewProps, v
     }
 
     render() {
-        let { fedInst,
-            selectedInstitutionIndices, } = this.props;
+        let {
+            fedInst,
+            selectedInstitutionIndices,
+        } = this.props;
+
+        let fedUrl = `https://www.ffiec.gov/nicpubweb/nicweb/InstitutionProfile.aspx?parID_Rssd=`;
 
         return (
             <Paper style={styles.fedInstitution} zDepth={2}>
@@ -96,10 +100,9 @@ export class FederalInstitutionView extends Component<FedInstitutionViewProps, v
                                     RSSDID |
                                 <a
                                         target="_blank"
-                                        href={`https://www.ffiec.gov/nicpubweb/nicweb/InstitutionProfile.aspx=
-                                            ?parID_Rssd${fedInst.RSSDID}&parDT_END=99991231`}
+                                        href={`${fedUrl}${fedInst.RSSDID}&parDT_END=99991231`}
                                 >
-                                    {fedInst.RSSDID}
+                                        {fedInst.RSSDID}
                                 </a>
                                 </span>
                             </TableRowColumn>

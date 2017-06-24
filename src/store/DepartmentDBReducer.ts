@@ -36,6 +36,7 @@ const unloadedState: DepartmentDBState = {
         searchTxt: '',
         isStartsWith: true,
         RSSDID: null,
+        selectedAssignmentFilter: 2,
         selectedStates: [''],
         selectedTypes: [0],
     },
@@ -201,6 +202,22 @@ const fetchInstitutions =
         dispatch({ type: 'REQUEST_INSTITUTIONS' });
 
         let reqTxt = `${baseUrl}Institutions?$filter=DeptDBID eq ${instFilter.deptDBID}`;
+
+        switch (instFilter.selectedAssignmentFilter) {
+            case 2: {
+                reqTxt += ` and RSSDID eq null`;
+                break;
+            }
+
+            case 3: {
+                reqTxt += ` and RSSDID ne null`;
+                break;
+            }
+
+            default: {
+                break;
+            }
+        }
 
         if (instFilter.searchTxt) {
             let encodedTxt = encodeURIComponent(instFilter.searchTxt);

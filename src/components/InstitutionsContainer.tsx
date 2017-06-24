@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react';
+import Divider from 'material-ui/Divider';
 import { ApplicationState } from '../store';
 import CircularProgress from 'material-ui/CircularProgress';
 import * as DepartmentDBStore from '../store/DepartmentDBReducer';
-import FlatButton from 'material-ui/FlatButton';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
 import * as Radium from 'radium';
@@ -51,6 +51,22 @@ const styles = {
     }
 };
 
+const handleSearchTxtChanged = (e: React.KeyboardEvent<HTMLInputElement>, props: InstitutionsProps) => {
+    if (e.keyCode === 13) {
+        let newVal = e.currentTarget.value;
+        props.setInstitutionFilter({ ...props.institutionFilter, searchTxt: newVal, });
+    }
+};
+
+const handleAssignmentFilterChanged = (
+    evt: React.FormEvent<{}>,
+    index: number,
+    value: number,
+    props: InstitutionsProps,
+) => {
+    props.setInstitutionFilter({ ...props.institutionFilter, selectedAssignmentFilter: value });
+};
+
 interface AppState {
     selectedState: Array<string> | null;
 }
@@ -59,8 +75,9 @@ interface AppState {
 export class InstitutionsContainer extends Component<InstitutionsProps, AppState> {
     node: SelectField;
     isStartsWith: boolean = true;
-    constructor() {
-        super();
+
+    constructor(props: InstitutionsProps) {
+        super(props);
 
         this.state = { selectedState: [] };
     }
@@ -94,15 +111,13 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
         this.props.updateInstitutionSelection(rows);
     }
 
-    handleSearchTxtChanged(e: React.FormEvent<{}>, newVal: string) {
-        this.props.setInstitutionFilter({ ...this.props.institutionFilter, searchTxt: newVal, });
-    }
-
     handleStartsWithToggle(e: React.FormEvent<{}>, isInputChecked: boolean) {
         this.props.setInstitutionFilter({ ...this.props.institutionFilter, isStartsWith: isInputChecked, });
     }
 
-    handleLoadRSSDID = (RSSDID: number | undefined) => {
+    handleLoadRSSDID = (e: React.MouseEvent<{}>, RSSDID: number | undefined) => {
+        e.stopPropagation();
+
         this.props.setFedInstitutionFilter({ ...this.props.fedInstitutionFilter, RSSDID: RSSDID });
     }
 
@@ -137,17 +152,38 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
                     </ToolbarGroup>
                     <ToolbarGroup>
                         <ToolbarTitle text={`Selection: ${selectedInstitutionIndices.length}`} />
-                        <ToolbarSeparator />
-                        <FlatButton label="All" onClick={this.handleSelectAll} />
-                        <FlatButton label="None" onClick={this.handleSelectNone} />
                     </ToolbarGroup>
                 </Toolbar>
                 <Toolbar style={{ height: 35, fontSize: 20 }}>
                     <ToolbarGroup>
                         <ToolbarTitle text="Search" />
+                        <SelectField
+                            value={institutionFilter.selectedAssignmentFilter}
+                            onChange={(e, ind, newVal) => handleAssignmentFilterChanged(e, ind, newVal, this.props)}
+                        >
+                            <MenuItem
+                                key={1}
+                                value={1}
+                                primaryText={'All'}
+                            />
+                            <MenuItem
+                                key={2}
+                                value={2}
+                                primaryText={'Unassigned'}
+                            />
+                            <MenuItem
+                                key={3}
+                                value={3}
+                                primaryText={'Assigned'}
+                            />
+                        </SelectField>
+                        <Divider />
                         <TextField
                             style={{ padding: '0px' }}
-                            onChange={(e, newVal) => this.handleSearchTxtChanged(e, newVal)}
+                            onKeyUp={
+                                (e: React.KeyboardEvent<HTMLInputElement>) =>
+                                    handleSearchTxtChanged(e, this.props)
+                            }
                             hintText="search by name..."
                         />
                         <Toggle
@@ -198,7 +234,8 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
                                             primaryText={typ.Name}
                                         />
                                     )
-                                )}
+                                )
+                            }
                         </SelectField>
                     </ToolbarGroup>
                     <ToolbarSeparator />
@@ -257,7 +294,7 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
                                         (
                                             <RaisedButton
                                                 label={i.RSSDID}
-                                                onClick={() => this.handleLoadRSSDID(i.RSSDID)}
+                                                onClick={(e) => this.handleLoadRSSDID(e, i.RSSDID)}
                                             />
                                         )
                                     }

@@ -36,131 +36,153 @@ const styles = {
     } as React.CSSProperties,
 };
 
+const Header = (props: FedInstitutionsProps) => {
+    let { fedInstitutions } = props;
+
+    return (
+        <AppBar
+            titleStyle={{ fontSize: 20 }}
+            showMenuIconButton={false}
+            title={(
+                <span>Federal Institutions <small> | Count: {fedInstitutions.length}</small></span>
+            )}
+        />
+    );
+};
+
+const SearchBar = (props: FedInstitutionsProps) => {
+    let {
+        fedInstitutionFilter,
+        fedInstitutionTypes,
+        states,
+     } = props;
+
+    return (
+        <Toolbar style={{ height: 35, fontSize: 20 }}>
+            <ToolbarGroup firstChild={true}>
+                <ToolbarTitle text="Search" />
+                <TextField
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => handleSearchTxtChanged(e, props)}
+                    hintText="search by name..."
+                />
+                <Toggle
+                    style={{ width: 70 }}
+                    defaultToggled={true}
+                    label={fedInstitutionFilter.isStartsWith ? 'starts' : 'contains'}
+                />
+            </ToolbarGroup>
+            <ToolbarGroup>
+                <TextField
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => handleRSSDIDChanged(e, props)}
+                    hintText="enter RSSDID..."
+                />
+                <SelectField
+                    style={{ fontSize: 15 }}
+                    multiple={true}
+                    value={fedInstitutionFilter.selectedTypes}
+                    onChange={(e, ind, newVal) => handleSelectedTypeChanged(e, ind, newVal, props)}
+                >
+                    <MenuItem
+                        value={''}
+                        primaryText="Select Type"
+                    />
+                    {
+                        fedInstitutionTypes.map(fedType =>
+                            (
+                                <MenuItem
+                                    key={fedType.FederalEntityTypeCode}
+                                    value={fedType.FederalEntityTypeCode}
+                                    primaryText={fedType.Name}
+                                />
+                            )
+                        )}
+                </SelectField>
+                <SelectField
+                    style={{ fontSize: 15 }}
+                    multiple={true}
+                    value={fedInstitutionFilter.selectedStates}
+                    onChange={(e, ind, newVal) => handleSelectedStateChanged(e, ind, newVal, props)}
+                >
+                    <MenuItem
+                        value={''}
+                        primaryText="Select State"
+                    />
+                    {
+                        states.map(fedState =>
+                            (
+                                <MenuItem
+                                    key={fedState.StateCode}
+                                    value={fedState.StateCode}
+                                    primaryText={fedState.Name}
+                                />
+                            )
+                        )}
+                </SelectField>
+            </ToolbarGroup>
+            <ToolbarSeparator />
+        </Toolbar>
+    );
+};
+
+const handleSelectedStateChanged = (
+    evt: React.FormEvent<{}>,
+    index: number,
+    newVal: string[],
+    props: FedInstitutionsProps) => {
+
+    props.setFedInstitutionFilter({
+        ...props.fedInstitutionFilter,
+        selectedStates: Array.isArray(newVal) && newVal.length === 0 ? [''] : newVal,
+    });
+};
+
+const handleSearchTxtChanged = (e: React.KeyboardEvent<HTMLInputElement>, props: FedInstitutionsProps) => {
+    if (e.keyCode === 13) {
+        props.setFedInstitutionFilter({
+            ...props.fedInstitutionFilter,
+            searchTxt: e.currentTarget.value
+        });
+    }
+};
+
+const handleSelectedTypeChanged = (
+    evt: React.FormEvent<{}>,
+    index: number,
+    newVal: string[],
+    props: FedInstitutionsProps) => {
+
+    props.setFedInstitutionFilter({
+        ...props.fedInstitutionFilter,
+        selectedTypes: newVal.length === 0 ? [''] : newVal.filter(x => x !== ''),
+    });
+};
+
+const handleRSSDIDChanged = (e: React.KeyboardEvent<HTMLInputElement>, props: FedInstitutionsProps) => {
+    if (e.keyCode === 13) {
+        let newVal = e.currentTarget.value;
+
+        props.setFedInstitutionFilter({
+            ...props.fedInstitutionFilter,
+            RSSDID: newVal.trim() === '' ? undefined : parseInt(newVal, 10)
+        });
+    }
+};
+
 export class FederalInstitutionsContainer extends Component<FedInstitutionsProps, void> {
-    handleSearchTxtChanged(e: React.KeyboardEvent<HTMLInputElement>) {
-        if (e.keyCode === 13) {
-            this.props.setFedInstitutionFilter({
-                ...this.props.fedInstitutionFilter,
-                searchTxt: e.currentTarget.value
-            });
-        }
-    }
-
-    handleRSSDIDChanged = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.keyCode === 13) {
-            let newVal = e.currentTarget.value;
-
-            this.props.setFedInstitutionFilter({
-                ...this.props.fedInstitutionFilter,
-                RSSDID: newVal.trim() === '' ? undefined : parseInt(newVal, 10)
-            });
-        }
-    }
-
-    handleSelectedTypeChanged = (
-        evt: React.FormEvent<{}>,
-        index: number,
-        newVal: string[]) => {
-        this.props.setFedInstitutionFilter({
-            ...this.props.fedInstitutionFilter,
-            selectedTypes: newVal.length === 0 ? [''] : newVal.filter(x => x !== ''),
-        });
-    }
-
-    handleSelectedStateChanged = (
-        evt: React.FormEvent<{}>,
-        index: number,
-        newVal: string[]) => {
-        this.props.setFedInstitutionFilter({
-            ...this.props.fedInstitutionFilter,
-            selectedStates: Array.isArray(newVal) && newVal.length === 0 ? [''] : newVal,
-        });
-    }
 
     render() {
         let {
             fedInstitutions,
-            fedInstitutionTypes,
-            fedInstitutionFilter,
-            states,
         } = this.props;
 
         return (
             <Paper style={styles.mainContainer} zDepth={2}>
-                <AppBar
-                    titleStyle={{ fontSize: 20 }}
-                    showMenuIconButton={false}
-                    title={(
-                        <span>Federal Institutions <small> | Count: {fedInstitutions.length}</small></span>
-                    )} 
-                />
-                <Toolbar style={{ height: 35, fontSize: 20 }}>
-                    <ToolbarGroup firstChild={true}>
-                        <ToolbarTitle text="Search" />
-                        <TextField
-                            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => this.handleSearchTxtChanged(e)}
-                            hintText="search by name..." 
-                        />
-                        <Toggle
-                            style={{ width: 70 }}
-                            defaultToggled={true}
-                            label={fedInstitutionFilter.isStartsWith ? 'starts' : 'contains'} 
-                        />
-                    </ToolbarGroup>
-                    <ToolbarGroup>
-                        <TextField
-                            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => this.handleRSSDIDChanged(e)}
-                            hintText="enter RSSDID..." 
-                        />
-                        <SelectField
-                            style={{ fontSize: 15 }}
-                            multiple={true}
-                            value={fedInstitutionFilter.selectedTypes}
-                            onChange={this.handleSelectedTypeChanged}
-                        >
-                            <MenuItem
-                                value={''}
-                                primaryText="Select Type" 
-                            />
-                            {
-                                fedInstitutionTypes.map(fedType =>
-                                    (
-                                        <MenuItem 
-                                            key={fedType.FederalEntityTypeCode}
-                                            value={fedType.FederalEntityTypeCode}
-                                            primaryText={fedType.Name} 
-                                        />
-                                    )
-                                )}
-                        </SelectField>
-                        <SelectField
-                            style={{ fontSize: 15 }}
-                            multiple={true}
-                            value={fedInstitutionFilter.selectedStates}
-                            onChange={this.handleSelectedStateChanged}
-                        >
-                            <MenuItem
-                                value={''}
-                                primaryText="Select State" 
-                            />
-                            {
-                                states.map(fedState =>
-                                    (
-                                        <MenuItem 
-                                            key={fedState.StateCode}
-                                            value={fedState.StateCode}
-                                            primaryText={fedState.Name} 
-                                        />
-                                    )
-                                )}
-                        </SelectField>
-                    </ToolbarGroup>
-                    <ToolbarSeparator />
-                </Toolbar>
+                <Header {...this.props} />
+                <SearchBar {...this.props} />
                 <div style={styles.fedContainer}>
                     {fedInstitutions.map(f => (
-                        <FederalInstitutionView 
-                            {...this.props} 
+                        <FederalInstitutionView
+                            {...this.props}
                             key={f.RSSDID}
                             fedInst={f}
                         />

@@ -11,10 +11,13 @@
     "react-dom": "^15.6.1"
   },
   "devDependencies": {
+    "@types/material-ui": "^0.17.11",
     "@types/moment": "^2.13.0",
     "@types/node": "^8.0.1",
     "@types/radium": "^0.18.21",
     "@types/react-hot-loader": "^3.0.1",
+    "@types/react-redux": "^4.4.44",
+    "@types/react-tap-event-plugin": "0.0.30",
     "@types/redux-promise-middleware": "0.0.6",
     "@types/webpack-env": "^1.13.0",
     "app-root-path": "^2.0.1",
@@ -41,7 +44,9 @@
     "react-hot-loader": "^3.0.0-beta.7",
     "react-redux": "^5.0.5",
     "react-tap-event-plugin": "^2.0.1",
+    "redux-devtools-extension": "^2.13.2",
     "redux-promise-middleware": "^4.3.0",
+    "redux-thunk": "^2.2.0",
     "source-map-loader": "^0.2.1",
     "style-loader": "0.17.0",
     "sw-precache-webpack-plugin": "0.9.1",
