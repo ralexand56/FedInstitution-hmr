@@ -1,13 +1,13 @@
 import * as React from 'react';
 import AppBar from 'material-ui/AppBar';
 import { Component } from 'react';
-import { ApplicationState } from '../store';
-import * as DepartmentDBStore from '../store/DepartmentDBReducer';
+// import { ApplicationState } from '../store';
+// import * as DepartmentDBStore from '../store/DepartmentDBReducer';
 import * as Radium from 'radium';
 import {
     FederalInstitution,
 } from './../services/data-types';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -19,13 +19,12 @@ import {
     TableRow,
 } from 'material-ui/Table';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import {
-    DepartmentDBState,
-} from './../services/data-types';
+// import {
+//     DepartmentDBState,
+// } from './../services/data-types';
 
-type FedInstitutionViewProps = DepartmentDBState &
-    { fedInst: FederalInstitution } &
-    typeof DepartmentDBStore.actionCreators;
+// type FedInstitutionViewProps = DepartmentDBState &
+//     typeof DepartmentDBStore.actionCreators;
 
 const styles = {
     fedInstitution: {
@@ -35,25 +34,30 @@ const styles = {
     } as React.CSSProperties
 };
 
+interface FederalInstitutionProps {
+    federalInstitution: FederalInstitution;
+    selectedInstitutionIndices: number[];
+}
+
 @Radium
-export class FederalInstitutionView extends Component<FedInstitutionViewProps, void> {
+export class FederalInstitutionView extends Component<FederalInstitutionProps, void> {
 
     handleAssignFed = () => {
-        let { fedInst,
-            activeDeptDB,
-            selectedInstitutionIndices,
-    } = this.props;
+    //     let { fedInst,
+    //         activeDeptDB,
+    //         selectedInstitutionIndices,
+    // } = this.props;
 
-        this.props.assignFed(
-            fedInst,
-            activeDeptDB!.DeptDBID,
-            selectedInstitutionIndices
-        );
+        // this.props.assignFed(
+        //     fedInst,
+        //     activeDeptDB!.DeptDBID,
+        //     selectedInstitutionIndices
+        // );
     }
 
     render() {
         let {
-            fedInst,
+            federalInstitution,
             selectedInstitutionIndices,
         } = this.props;
 
@@ -64,12 +68,12 @@ export class FederalInstitutionView extends Component<FedInstitutionViewProps, v
                 <AppBar
                     titleStyle={{
                         fontSize: 15,
-                        color: (fedInst.Institutions!.length) ? 'lightgreen' : 'white'
+                        color: (federalInstitution.Institutions!.length) ? 'lightgreen' : 'white'
                     }}
                     showMenuIconButton={false}
                     title={(
                         <span>
-                            {fedInst.Name}
+                            {federalInstitution.Name}
                         </span>
                     )}
                     iconElementRight={(
@@ -100,31 +104,32 @@ export class FederalInstitutionView extends Component<FedInstitutionViewProps, v
                                     RSSDID |
                                 <a
                                         target="_blank"
-                                        href={`${fedUrl}${fedInst.RSSDID}&parDT_END=99991231`}
+                                        href={`${fedUrl}${federalInstitution.RSSDID}&parDT_END=99991231`}
                                 >
-                                        {fedInst.RSSDID}
+                                        {federalInstitution.RSSDID}
                                 </a>
                                 </span>
                             </TableRowColumn>
                         </TableRow>
                         <TableRow style={{ height: 25 }}>
                             <TableRowColumn style={{ height: 25 }}>
-                                <span>Name | {fedInst.FullName}</span>
+                                <span>Name | {federalInstitution.FullName}</span>
                             </TableRowColumn>
                         </TableRow>
                         <TableRow style={{ height: 25 }}>
                             <TableRowColumn style={{ height: 25 }}>
-                                <span>State | {fedInst.StateCode}</span>
+                                <span>State | {federalInstitution.StateCode}</span>
                             </TableRowColumn>
                         </TableRow>
                         <TableRow style={{ height: 25 }}>
                             <TableRowColumn style={{ height: 25 }}>
-                                <span>Type | {fedInst.FederalEntityType && fedInst.FederalEntityType!.Name}</span>
+                                <span>Type | {federalInstitution.FederalEntityType && 
+                                    federalInstitution.FederalEntityType!.Name}</span>
                             </TableRowColumn>
                         </TableRow>
                         <TableRow style={{ height: 25 }}>
                             <TableRowColumn style={{ height: 25 }}>
-                                <span>Assigned | {fedInst.Institutions.length}</span>
+                                <span>Assigned | {federalInstitution.Institutions.length}</span>
                             </TableRowColumn>
                         </TableRow>
                     </TableBody>
@@ -134,7 +139,9 @@ export class FederalInstitutionView extends Component<FedInstitutionViewProps, v
     }
 }
 
-export default connect(
-    (state: ApplicationState) => state.departmentDBs,
-    DepartmentDBStore.actionCreators
-)(FederalInstitutionView);
+export default FederalInstitutionView;
+
+// export default connect(
+//     (state: ApplicationState) => state.departmentDBs,
+//     DepartmentDBStore.actionCreators
+// )(FederalInstitutionView);

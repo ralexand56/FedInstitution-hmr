@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react';
 import AppBar from 'material-ui/AppBar';
-import { ApplicationState } from '../store';
-import { connect } from 'react-redux';
-import { FederalInstitutionView } from './FederalInstitutionView';
+// import { ApplicationState } from '../store';
+// import { connect } from 'react-redux';
+// import { FederalInstitutionView } from './FederalInstitutionView';
 import * as DepartmentDBStore from '../store/DepartmentDBReducer';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
@@ -168,32 +168,24 @@ const handleRSSDIDChanged = (e: React.KeyboardEvent<HTMLInputElement>, props: Fe
     }
 };
 
-export class FederalInstitutionsContainer extends Component<FedInstitutionsProps, void> {
+export default class FederalInstitutionsContainer extends Component<FedInstitutionsProps, void> {
 
     render() {
-        let {
-            fedInstitutions,
-        } = this.props;
+        // let {
+        //     fedInstitutions,
+        // } = this.props;
 
         return (
             <Paper style={styles.mainContainer} zDepth={2}>
                 <Header {...this.props} />
                 <SearchBar {...this.props} />
-                <div style={styles.fedContainer}>
-                    {fedInstitutions.map(f => (
-                        <FederalInstitutionView
-                            {...this.props}
-                            key={f.RSSDID}
-                            fedInst={f}
-                        />
-                    ))}
-                </div>
+                <div style={styles.fedContainer} />
             </Paper>
         );
     }
 }
 
-export default connect(
-    (state: ApplicationState) => state.departmentDBs,
-    DepartmentDBStore.actionCreators
-)(FederalInstitutionsContainer);
+// export default connect(
+//     (state: ApplicationState) => state.departmentDBs,
+//     DepartmentDBStore.actionCreators
+// )(FederalInstitutionsContainer);

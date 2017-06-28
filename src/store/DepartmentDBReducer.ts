@@ -33,7 +33,7 @@ const unloadedState: DepartmentDBState = {
     institutionsLoading: false,
     institutionFilter: {
         deptDBID: 1,
-        searchTxt: '',
+        searchTxt: 'k',
         isStartsWith: true,
         RSSDID: null,
         selectedAssignmentFilter: 2,
