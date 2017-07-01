@@ -1,5 +1,5 @@
 export interface DepartmentDBState {
-    activeDeptDB?: DepartmentDB;
+    activeDeptDB: DepartmentDB | null;
     activeInstitutions: Institution[];
     departmentDBs: DepartmentDB[];
     deptDBsLoading: boolean;
@@ -14,6 +14,17 @@ export interface DepartmentDBState {
     searchTxt: string;
     selectedInstitutionIndices: Array<number> | string;
     showDeptDBs: boolean;
+    states: Array<State>;
+}
+
+export interface InstitutionDBState {
+    activeDeptDB: DepartmentDB | null;
+    activeInstitutions: Institution[];
+    institutionsLoading: boolean;
+    institutionFilter: InstitutionFilter;
+    institutionTotalCnt: number;
+    institutionTypes: InstitutionType[];
+    selectedInstitutionIndices: number[] | string;
     states: Array<State>;
 }
 
@@ -115,7 +126,7 @@ export interface ReceiveInstitutionsAction {
 
 export interface SelectDeptDBAction {
     type: 'SELECT_DEPTDB';
-    deptDBID: number;
+    activeDeptDB: DepartmentDB;
     institutionFilter: InstitutionFilter;
 }
 

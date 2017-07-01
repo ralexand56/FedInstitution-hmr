@@ -4,21 +4,22 @@ const styles = {
     mainContainer: {
         display: 'flex',
         justifyContent: 'center',
-        backgroundColor: 'salmon',
-        width: 80,
+        width: 140,
         height: 80,
         padding: 5,
     } as React.CSSProperties,
     leftContainer: {
         display: 'flex',
+        justifyContent: 'flex-end',
         flexDirection: 'column',
-        width: 40,
         borderStyle: 'solid',
-        borderWidth: 0,
+        borderWidth: 1,
+        padding: 5,
         overflow: 'hidden',
     } as React.CSSProperties,
     rightContainer: {
-
+        padding: 5,
+        flex: 1,
     } as React.CSSProperties,
 };
 
@@ -28,13 +29,22 @@ interface AnalogProps {
 
 const GaugeItem = (props: { ind: number, value: number }) => {
     let { ind, value } = props;
+    let activeColor = 'red';
+    
+    if (value > 30 && value < 80) {
+        activeColor = 'yellow';
+    } else if (value > 80) {
+        activeColor = 'green';
+    } else {
+        activeColor = 'red';
+    }
 
     return (
         <div
             style={
                 {
                     height: 5,
-                    backgroundColor: (value >= (10 - ind) * 10) ? 'red' : 'black',
+                    backgroundColor: (value >= (10 - ind) * 10) ? activeColor : 'black',
                     width: 40,
                     borderRadius: 1,
                     marginTop: 3,
@@ -71,8 +81,8 @@ export const AnalogGauge = (props: AnalogProps) => {
                     renderGauges(10, value)
                 }
             </div>
-            <div>
-                <h4>{value}%</h4>
+            <div style={styles.rightContainer}>
+                <h4>{value.toFixed(1)}%</h4>
             </div>
         </div>
     );

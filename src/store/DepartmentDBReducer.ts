@@ -14,7 +14,7 @@ import { Reducer } from 'redux';
 const baseUrl = `http://dev.informars.com/webservices/FedSvc/odata/`;
 
 const unloadedState: DepartmentDBState = {
-    activeDeptDB: undefined,
+    activeDeptDB: null,
     activeInstitutions: [],
     departmentDBs: [],
     deptDBsLoading: false,
@@ -50,6 +50,7 @@ const unloadedState: DepartmentDBState = {
 
 export const reducer: Reducer<DepartmentDBState> = (state: DepartmentDBState, action: KnownAction) => {
     switch (action.type) {
+
         case 'ASSIGN_FEDINSTITUTION':
 
             return {
@@ -74,7 +75,6 @@ export const reducer: Reducer<DepartmentDBState> = (state: DepartmentDBState, ac
 
             return {
                 ...state,
-                activeDeptDB: action.departmentDBs ? action.departmentDBs[0] : undefined,
                 departmentDBs: action.departmentDBs,
                 deptDBsLoading: false,
             };
@@ -163,13 +163,12 @@ export const reducer: Reducer<DepartmentDBState> = (state: DepartmentDBState, ac
             };
 
         case 'SELECT_DEPTDB':
-            let activeDB = state.departmentDBs.filter(deptDB => deptDB.DeptDBID === action.deptDBID)[0];
 
             return {
                 ...state,
-                activeDeptDB: activeDB,
+                activeDeptDB: action.activeDeptDB,
                 institutionFilter: {
-                    ...unloadedState.institutionFilter, deptDBID: activeDB.DeptDBID,
+                    ...unloadedState.institutionFilter, deptDBID: action.activeDeptDB.DeptDBID,
                 }
             };
 
@@ -477,12 +476,14 @@ export const actionCreators = {
                             (d.Institutions.filter(x => x.RSSDID).length / d.Institutions.length);
                     });
 
-                    let deptDBID: number = depts.value[0].DeptDBID;
+                    let activeDeptDB = depts.value[0];
+                    let deptDBID: number = activeDeptDB.DeptDBID;
                     instFilter.deptDBID = deptDBID;
 
                     fetchInstitutions(dispatch, instFilter);
 
                     dispatch({ type: 'RECEIVE_DEPARTMENTDBS', searchTxt: searchTxt, departmentDBs: depts.value });
+                    dispatch({ type: 'SELECT_DEPTDB', activeDeptDB, institutionFilter: instFilter});
                 });
 
             dispatch({ type: 'REQUEST_DEPARTMENTDBS', searchTxt: searchTxt, institutionFilter: instFilter });
@@ -517,7 +518,9 @@ export const actionCreators = {
     selectDeptDB: (deptDBID: number, instFilter: InstitutionFilter):
         AppThunkAction<KnownAction> => (dispatch, getState) => {
             fetchInstitutions(dispatch, instFilter);
-            dispatch({ type: 'SELECT_DEPTDB', deptDBID: deptDBID, institutionFilter: instFilter });
+
+            let activeDeptDB = getState().departmentDBs.departmentDBs.filter(deptDB => deptDB.DeptDBID === deptDBID)[0];
+            dispatch({ type: 'SELECT_DEPTDB', activeDeptDB, institutionFilter: instFilter });
         },
 
     toggleDepartmentVisibility: () => {

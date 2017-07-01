@@ -2,11 +2,12 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
-import {AnalogGauge} from '../components/AnalogGauge';
+import { AnalogGauge } from '../components/AnalogGauge';
 import * as DepartmentDBStore from '../store/DepartmentDBReducer';
 import {
     DepartmentDBState,
 } from './../services/data-types';
+import { Motion, spring, presets } from 'react-motion';
 
 type StoreProps = DepartmentDBState &
     typeof DepartmentDBStore.actionCreators;
@@ -20,17 +21,21 @@ export class StoreContainer extends Component<StoreProps, AppState> {
         super(props);
     }
 
-    render() {
-        // const { activeInstitutions } = this.props;
-
-        // return (
-        //     <div>
-        //         <h4>Header2</h4>
-        //         {activeInstitutions.map((i) => <h4 key={i.InstitutionID}> {i.Name}</h4 >)}
-        //     </div>
-        // );
+    render(): JSX.Element {
         return (
-            <AnalogGauge value={0} />
+            <div>
+                {
+                    this.props.departmentDBs.map((d, ind) => (
+                        <Motion
+                            key={ind}
+                            defaultStyle={{ x: 0 }}
+                            style={{ x: spring(d.Pct * 100, presets.gentle) }}
+                        >
+                            {value => <AnalogGauge value={value.x} />}
+                        </Motion>
+                    ))
+                 }
+            </div>
         );
     }
 }

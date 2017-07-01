@@ -1,68 +1,83 @@
-import { AppThunkAction } from './index';
-import { Institution } from './../services/data-types';
+import { InstitutionDBState } from './../services/data-types';
+import { KnownAction } from './../services/data-types';
 import { Reducer } from 'redux';
 
-const baseUrl = `http://dev.informars.com/webservices/FedSvc/odata/`;
-
-export interface InstitutionState {
-    currentPage: number;
-    deptDBID: number;
-    institutions: Array<Institution>;
-    isLoading: boolean;
-}
-
-interface RequestInstitutionsAction {
-    type: 'REQUEST_INSTITUTIONS';
-    deptDBID: number;
-}
-
-interface ReceiveInstitutionsAction {
-    type: 'RECEIVE_INSTITUTIONS';
-    institutions: Array<Institution>;
-}
-
-type KnownAction = RequestInstitutionsAction | ReceiveInstitutionsAction;
-
-export const actionCreators = {
-    requestInstitutions: (deptDBID: number = 1): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        let { departmentDBs } = getState();
-        let { activeDeptDB } = departmentDBs;
-
-        // let nameFilter = `$filter=startswith(Name, '${searchTxt}')&`;
-        let reqTxt = `${baseUrl}Institutions?$filter=DeptDBID eq ${activeDeptDB ? activeDeptDB.DeptDBID : deptDBID}
-        &$top=100&$expand=FederalInstitution`;
-
-        fetch(reqTxt)
-            .then(response => response.json())
-            .then(data => {
-                dispatch({ type: 'RECEIVE_INSTITUTIONS', institutions: data.value });
-            });
-
-        dispatch({ type: 'REQUEST_INSTITUTIONS', deptDBID: deptDBID });
-    }
+const unloadedState: InstitutionDBState = {
+    activeDeptDB: null,
+    activeInstitutions: [],
+    institutionsLoading: false,
+    institutionFilter: {
+        deptDBID: 1,
+        searchTxt: 'k',
+        isStartsWith: true,
+        RSSDID: null,
+        selectedAssignmentFilter: 2,
+        selectedStates: [''],
+        selectedTypes: [0],
+    },
+    institutionTotalCnt: 0,
+    institutionTypes: [],
+    selectedInstitutionIndices: [],
+    states: [],
 };
 
-const unloadedState: InstitutionState = {
-    currentPage: 0,
-    deptDBID: 1,
-    institutions: [],
-    isLoading: false,
-};
-
-export const reducer: Reducer<InstitutionState> = (state: InstitutionState, action: KnownAction) => {
+export const reducer: Reducer<InstitutionDBState> = (state: InstitutionDBState, action: KnownAction) => {
     switch (action.type) {
-        case 'REQUEST_INSTITUTIONS':
+
+        case 'SET_INSTITUTION_FILTER':
+
             return {
                 ...state,
-                institutions: [],
-                isLoading: true,
+                institutionFilter: action.institutionFilter,
+            };
+
+        case 'REQUEST_INSTITUTIONS':
+
+            return {
+                ...state,
+                activeInstitutions: [],
+                institutionsLoading: true,
+                institutionTotalCnt: 0,
             };
 
         case 'RECEIVE_INSTITUTIONS':
+
             return {
                 ...state,
-                institutions: action.institutions,
-                isLoading: false,
+                activeInstitutions: action.activeInstitutions,
+                institutionTotalCnt: action.cnt,
+                institutionsLoading: false,
+            };
+
+        case 'SELECT_ALL':
+
+            return {
+                ...state,
+                selectedInstitutionIndices: state.activeInstitutions.map((x, ind) => ind),
+            };
+
+        case 'SELECT_NONE':
+
+            return {
+                ...state,
+                selectedInstitutionIndices: [],
+            };
+
+        case 'SELECT_DEPTDB':
+
+            return {
+                ...state,
+                activeDeptDB: action.activeDeptDB,
+                institutionFilter: {
+                    ...unloadedState.institutionFilter, deptDBID: action.activeDeptDB.DeptDBID,
+                }
+            };
+
+        case 'UPDATE_INSTITUTION_SELECTION':
+
+            return {
+                ...state,
+                selectedInstitutionIndices: action.indices,
             };
 
         default:
