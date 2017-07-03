@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Motion, spring, presets } from 'react-motion';
 
 const styles = {
     mainContainer: {
@@ -30,10 +31,10 @@ interface AnalogProps {
 const GaugeItem = (props: { ind: number, value: number }) => {
     let { ind, value } = props;
     let activeColor = 'red';
-    
+
     if (value > 30 && value < 80) {
         activeColor = 'yellow';
-    } else if (value > 80) {
+    } else if (value >= 80) {
         activeColor = 'green';
     } else {
         activeColor = 'red';
@@ -74,17 +75,20 @@ export const AnalogGauge = (props: AnalogProps) => {
     let { value } = props;
 
     return (
-        <div style={styles.mainContainer}>
+        <Motion defaultStyle={{ x: 0 }} style={{ x: spring(value, presets.wobbly) }}>
+            {
+                newVal => <div style={styles.mainContainer}>
 
-            <div style={styles.leftContainer}>
-                {
-                    renderGauges(10, value)
-                }
-            </div>
-            <div style={styles.rightContainer}>
-                <h4>{value.toFixed(1)}%</h4>
-            </div>
-        </div>
+                <div style={styles.leftContainer}>
+                    {
+                        renderGauges(10, value)
+                    }
+                </div>
+                <div style={styles.rightContainer}>
+                    <h4>{newVal.x.toFixed(1)}%</h4>
+                </div>
+            </div>}
+        </Motion>
     );
 };
 
