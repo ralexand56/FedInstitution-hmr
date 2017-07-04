@@ -10,11 +10,10 @@ const styles = {
         padding: 10,
         position: 'absolute',
         borderLeft: 'solid 1px',
-        width: 350,
     } as React.CSSProperties
 };
 
-const AnimatedAside = (props: { isOn: boolean, toggle: () => void,  children: {} }) => {
+const AnimatedAside = (props: { isOn: boolean, toggle: () => void,  children?: {} }) => {
     let { isOn, toggle } = props;
 
     return (

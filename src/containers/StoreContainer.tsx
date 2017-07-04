@@ -1,46 +1,48 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { connect } from 'react-redux';
-import { ApplicationState } from '../store';
-import { AnalogGauge } from '../components/AnalogGauge';
-import * as DepartmentDBStore from '../store/DepartmentDBReducer';
-import {
-    DepartmentDBState,
-} from './../services/data-types';
-import { Motion, spring, presets } from 'react-motion';
+// import { connect } from 'react-redux';
+// import { ApplicationState } from '../store';
+import AnimatedAside from '../components/AnimatedAside';
+// import * as DepartmentDBStore from '../store/DepartmentDBReducer';
+// import {
+//     DepartmentDBState,
+// } from './../services/data-types';
 
-type StoreProps = DepartmentDBState &
-    typeof DepartmentDBStore.actionCreators;
+// type StoreProps = DepartmentDBState &
+//     typeof DepartmentDBStore.actionCreators;
 
 interface AppState {
     selectedState: Array<string> | null;
+    isOn: boolean;
 }
 
-export class StoreContainer extends Component<StoreProps, AppState> {
-    constructor(props: StoreProps) {
+export default class StoreContainer extends Component<{}, AppState> {
+    constructor(props: {}) {
         super(props);
+
+        this.state = {
+            selectedState: null,
+            isOn: true,
+        };
     }
 
-    render(): JSX.Element {
+    toggle = () => {
+        this.setState({ isOn: !this.state.isOn });
+    }
+
+    render() {
         return (
             <div>
-                {
-                    this.props.departmentDBs.map((d, ind) => (
-                        <Motion
-                            key={ind}
-                            defaultStyle={{ x: 0 }}
-                            style={{ x: spring(d.Pct * 100, presets.gentle) }}
-                        >
-                            {value => <AnalogGauge value={value.x} />}
-                        </Motion>
-                    ))
-                 }
+                <button onClick={this.toggle}>On</button>
+                <AnimatedAside isOn={this.state.isOn} toggle={this.toggle} >
+                    <h1>Rico Alexander</h1>
+                </AnimatedAside>
             </div>
         );
     }
 }
 
-export default connect(
-    (state: ApplicationState) => state.departmentDBs,
-    DepartmentDBStore.actionCreators
-)(StoreContainer);
+// export default connect(
+//     (state: ApplicationState) => state.departmentDBs,
+//     DepartmentDBStore.actionCreators
+// )(StoreContainer);
