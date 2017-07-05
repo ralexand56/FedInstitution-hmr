@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "fedmanager-hmr",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -9,9 +9,7 @@
     "react-dom": "^15.6.1"
   },
   "devDependencies": {
-    "@types/antd": "^1.0.0",
     "@types/material-ui": "^0.17.11",
-    "@types/moment": "^2.13.0",
     "@types/node": "^8.0.1",
     "@types/radium": "^0.18.21",
     "@types/react": "^15.0.34",
@@ -21,6 +19,7 @@
     "@types/react-redux": "^4.4.44",
     "@types/react-tap-event-plugin": "0.0.30",
     "@types/redux-promise-middleware": "0.0.6",
+    "@types/webpack-env": "^1.13.0",
     "ajv": "^5.2.0",
     "antd": "^2.11.2",
     "app-root-path": "^2.0.1",
@@ -35,8 +34,10 @@
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "^2.29.0",
     "jest": "20.0.3",
+    "jsxstyle": "^1.0.2",
     "material-ui": "^0.18.3",
     "moment": "^2.18.1",
+    "node": "0.0.0",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.0.0",
     "postcss-loader": "2.0.5",
@@ -52,7 +53,7 @@
     "react-tap-event-plugin": "^2.0.1",
     "redbox-react": "^1.4.2",
     "redux-devtools-extension": "^2.13.2",
-    "redux-promise-middleware": "^4.3.0",
+    "redux-promise-middleware": "4.2.1",
     "redux-thunk": "^2.2.0",
     "source-map-loader": "^0.2.1",
     "style-loader": "0.17.0",
@@ -63,7 +64,7 @@
     "tslint-react": "^3.0.0",
     "typescript": "^2.3.3",
     "url-loader": "0.5.8",
-    "webpack": "^3.0.0",
+    "webpack": "2.6.1",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-dev-server": "2.5.0",
     "webpack-env": "^0.8.0",

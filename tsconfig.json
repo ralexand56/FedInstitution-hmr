@@ -2,7 +2,8 @@
   "compilerOptions": {
     "outDir": "build/dist",
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
+    "allowSyntheticDefaultImports": true,
     "lib": ["es6", "dom"],
     "sourceMap": true,
     "allowJs": true,

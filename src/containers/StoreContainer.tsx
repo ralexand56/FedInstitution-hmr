@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { Card } from 'antd';
+import 'antd/dist/antd.css';
 // import { connect } from 'react-redux';
 // import { ApplicationState } from '../store';
 import AnimatedAside from '../components/AnimatedAside';
@@ -35,7 +37,7 @@ export default class StoreContainer extends Component<{}, AppState> {
             <div>
                 <button onClick={this.toggle}>On</button>
                 <AnimatedAside isOn={this.state.isOn} toggle={this.toggle} >
-                    <h1>Rico Alexander</h1>
+                    <Card style={{width: 300}} title={'Rico Alexander'} loading={true} />
                 </AnimatedAside>
             </div>
         );
