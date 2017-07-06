@@ -6,7 +6,7 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import { ApplicationState } from '../store';
-import * as DepartmentDBStore from '../store/DepartmentDBReducer';
+import * as DepartmentDBActions from '../actions/DepartmentDBActions';
 import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
@@ -18,7 +18,7 @@ import {
 } from './../services/data-types';
 
 type DepartmentDBProps = DepartmentDBState &
-    typeof DepartmentDBStore.actionCreators;
+    typeof DepartmentDBActions.actionCreators;
 
 interface AppState {
     searchTxt: string;
@@ -66,17 +66,17 @@ const DepartmentDBView = (props: { dept: DepartmentDB, isActive: boolean }) => {
             <AppBar
                 titleStyle={{ fontSize: 15 }}
                 showMenuIconButton={false}
-                title={`${dept.Name} | ${dept.Department.Name}`} 
+                title={`${dept.Name} | ${dept.Department.Name}`}
             />
             <Divider />
             <div>
                 <h2 style={{ margin: '45px 0 0 0' }}>{pctFormatted}<small>%</small></h2>
-                <CircularProgress 
+                <CircularProgress
                     style={{ margin: '-150px 0 0 0' }}
                     mode="determinate"
                     size={80}
                     thickness={5}
-                    value={pctFormatted} 
+                    value={pctFormatted}
                 />
             </div>
             <h5>Last Updated | {moment(dept.LastModified).format('ll')}</h5>
@@ -95,41 +95,38 @@ export class DepartmentDBsContainer extends Component<DepartmentDBProps, AppStat
     handleSearchTxtChanged(e: React.FormEvent<{}>, newVal: string) {
         this.setState({ searchTxt: newVal });
 
-        this.props.requestDepartmentDBs(newVal, this.props.institutionFilter);
+        this.props.requestDepartmentDBs(newVal);
     }
 
     render() {
-        let { departmentDBs, 
-                deptDBsLoading, 
-                activeDeptDB, 
-                selectDeptDB, 
-                showDeptDBs } = this.props;
+        let {
+            departmentDBs,
+            deptDBsLoading,
+            activeDeptDB,
+            selectDeptDB,
+            showDeptDBs } = this.props;
         let { searchTxt } = this.state;
 
         return (
-            <Paper style={{...styles.mainContainer, display: showDeptDBs ? 'inline' : 'none'}} open={true} zDepth={2}>
+            <Paper style={{ ...styles.mainContainer, display: showDeptDBs ? 'inline' : 'none' }} open={true} zDepth={2}>
                 <AppBar
                     titleStyle={{ fontSize: 20 }}
                     iconElementLeft={<IconButton><NavigationClose /></IconButton>}
                     showMenuIconButton={true}
-                    title={'Dept. Databases'} 
+                    title={'Dept. Databases'}
                 />
                 <Divider />
-                <TextField 
+                <TextField
                     style={{ padding: '0px' }}
                     value={searchTxt}
                     onChange={(e, newVal) => this.handleSearchTxtChanged(e, newVal)}
-                    hintText="search by name..." 
+                    hintText="search by name..."
                 />
                 {
                     deptDBsLoading ? (<CircularProgress />)
                         : (departmentDBs.map(d => (
-                            <div 
-                                onClick={
-                                () => selectDeptDB(d.DeptDBID, {
-                                    ...this.props.institutionFilter,
-                                    deptDBID: d.DeptDBID,
-                                })}
+                            <div
+                                onClick={() => selectDeptDB(d)}
                                 key={d.DeptDBID}
                             >
                                 <DepartmentDBView
@@ -146,5 +143,5 @@ export class DepartmentDBsContainer extends Component<DepartmentDBProps, AppStat
 
 export default connect(
     (state: ApplicationState) => state.departmentDBs,
-    DepartmentDBStore.actionCreators
+    DepartmentDBActions.actionCreators
 )(DepartmentDBsContainer);

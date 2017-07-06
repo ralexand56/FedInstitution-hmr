@@ -3,7 +3,7 @@ import { Component } from 'react';
 import Divider from 'material-ui/Divider';
 import { ApplicationState } from '../store';
 import CircularProgress from 'material-ui/CircularProgress';
-import * as DepartmentDBStore from '../store/DepartmentDBReducer';
+import * as InstitutionActions from '../actions/InstitutionActions';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
 import * as Radium from 'radium';
@@ -29,11 +29,11 @@ import {
 } from 'material-ui/Toolbar';
 
 import {
-    DepartmentDBState,
+    InstitutionState,
 } from './../services/data-types';
 
-type InstitutionsProps = DepartmentDBState &
-    typeof DepartmentDBStore.actionCreators;
+type InstitutionsProps = InstitutionState &
+    typeof InstitutionActions.actionCreators;
 
 const styles = {
     td: {
@@ -118,7 +118,15 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
     handleLoadRSSDID = (e: React.MouseEvent<{}>, RSSDID: number | undefined) => {
         e.stopPropagation();
 
-        this.props.setFedInstitutionFilter({ ...this.props.fedInstitutionFilter, RSSDID: RSSDID });
+        this.props.setFedInstitutionFilter({
+            RSSDID: RSSDID,
+            searchTxt: '',
+            isStartsWith: true,
+            searchBankingTypes: false,
+            searchHoldingCompanies: true,
+            selectedStates: [''],
+            selectedTypes: [''],
+        });
     }
 
     public render() {
@@ -316,6 +324,6 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
 }
 
 export default connect(
-    (state: ApplicationState) => state.departmentDBs,
-    DepartmentDBStore.actionCreators
+    (state: ApplicationState) => state.institutions,
+    InstitutionActions.actionCreators
 )(InstitutionsContainer);

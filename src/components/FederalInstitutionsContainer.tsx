@@ -4,7 +4,7 @@ import AppBar from 'material-ui/AppBar';
 // import { ApplicationState } from '../store';
 // import { connect } from 'react-redux';
 // import { FederalInstitutionView } from './FederalInstitutionView';
-import * as DepartmentDBStore from '../store/DepartmentDBReducer';
+import * as FederalInstitutionActions from '../actions/FederalInstitutionActions';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
 import SelectField from 'material-ui/SelectField';
@@ -18,11 +18,11 @@ import {
 } from 'material-ui/Toolbar';
 
 import {
-    DepartmentDBState,
+    FederalInstitutionState,
 } from './../services/data-types';
 
-type FedInstitutionsProps = DepartmentDBState &
-    typeof DepartmentDBStore.actionCreators;
+type FedInstitutionsProps = FederalInstitutionState &
+    typeof FederalInstitutionActions.actionCreators;
 
 const styles = {
     mainContainer: {

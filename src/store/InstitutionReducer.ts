@@ -1,14 +1,14 @@
-import { InstitutionDBState } from './../services/data-types';
+import { InstitutionState } from './../services/data-types';
 import { KnownAction } from './../services/data-types';
 import { Reducer } from 'redux';
 
-const unloadedState: InstitutionDBState = {
+const unloadedState: InstitutionState = {
     activeDeptDB: null,
     activeInstitutions: [],
     institutionsLoading: false,
     institutionFilter: {
         deptDBID: 1,
-        searchTxt: 'k',
+        searchTxt: '',
         isStartsWith: true,
         RSSDID: null,
         selectedAssignmentFilter: 2,
@@ -21,14 +21,30 @@ const unloadedState: InstitutionDBState = {
     states: [],
 };
 
-export const reducer: Reducer<InstitutionDBState> = (state: InstitutionDBState, action: KnownAction) => {
+export const reducer: Reducer<InstitutionState> = (state: InstitutionState, action: KnownAction) => {
     switch (action.type) {
 
-        case 'SET_INSTITUTION_FILTER':
+        case 'RECEIVE_INSTITUTIONS':
 
             return {
                 ...state,
-                institutionFilter: action.institutionFilter,
+                activeInstitutions: action.activeInstitutions,
+                institutionTotalCnt: action.cnt,
+                institutionsLoading: false,
+            };
+
+        case 'RECEIVE_INSTITUTIONTYPES':
+
+            return {
+                ...state,
+                institutionTypes: action.instTypes,
+            };
+
+        case 'RECEIVE_STATES':
+
+            return {
+                ...state,
+                states: action.states,
             };
 
         case 'REQUEST_INSTITUTIONS':
@@ -38,15 +54,6 @@ export const reducer: Reducer<InstitutionDBState> = (state: InstitutionDBState, 
                 activeInstitutions: [],
                 institutionsLoading: true,
                 institutionTotalCnt: 0,
-            };
-
-        case 'RECEIVE_INSTITUTIONS':
-
-            return {
-                ...state,
-                activeInstitutions: action.activeInstitutions,
-                institutionTotalCnt: action.cnt,
-                institutionsLoading: false,
             };
 
         case 'SELECT_ALL':
@@ -70,7 +77,15 @@ export const reducer: Reducer<InstitutionDBState> = (state: InstitutionDBState, 
                 activeDeptDB: action.activeDeptDB,
                 institutionFilter: {
                     ...unloadedState.institutionFilter, deptDBID: action.activeDeptDB.DeptDBID,
-                }
+                },
+                activeInstitutions: [],
+            };
+
+        case 'SET_INSTITUTION_FILTER':
+
+            return {
+                ...state,
+                institutionFilter: action.institutionFilter,
             };
 
         case 'UPDATE_INSTITUTION_SELECTION':

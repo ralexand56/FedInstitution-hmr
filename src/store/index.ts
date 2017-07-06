@@ -1,15 +1,18 @@
+import { FederalInstitutionState } from './../services/data-types';
 // import { createSelector } from 'reselect';
 import * as DepartmentDB from './DepartmentDBReducer';
-import * as InstitutionDB from './InstitutionReducer';
+import * as FederalInstitution from './FederalInstitutionReducer';
+import * as Institution from './InstitutionReducer';
 
 import {
     DepartmentDBState,
-    InstitutionDBState,
+    InstitutionState,
 } from './../services/data-types';
 // The top-level state object
 export interface ApplicationState {
     departmentDBs: DepartmentDBState;
-    institutionDBs: InstitutionDBState;
+    federalInstitutions: FederalInstitutionState;
+    institutions: InstitutionState;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using
@@ -17,7 +20,8 @@ export interface ApplicationState {
 // acts on the corresponding ApplicationState property type.
 export const reducers = {
     departmentDBs: DepartmentDB.reducer,
-    institutionDBs: InstitutionDB.reducer,
+    federalInstiutions: FederalInstitution.reducer,
+    institutions: Institution.reducer,
 };
 
 // This type can be used as a hint on action creators so that its 'dispatch' and 'getState' params are

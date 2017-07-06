@@ -9,7 +9,7 @@ import './index.css';
 import configureStore from './configureStore';
 import {
   actionCreators
-} from './store/DepartmentDBReducer';
+} from './actions/InitActions';
 // import getMuiTheme from 'material-ui/styles/getMuiTheme';
 // import { blueGrey500 } from 'material-ui/styles/colors';
 import registerServiceWorker from './registerServiceWorker';
@@ -32,7 +32,6 @@ import StoreContainer from './containers/StoreContainer';
 const store = configureStore();
 
 store.dispatch(actionCreators.init());
-store.dispatch(actionCreators.requestDepartmentDBs('', store.getState().departmentDBs.institutionFilter));
 
 const root = document.getElementById('root');
 

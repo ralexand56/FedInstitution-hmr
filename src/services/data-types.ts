@@ -1,23 +1,14 @@
+export const baseUrl = `http://dev.informars.com/webservices/FedSvc/odata/`;
+
 export interface DepartmentDBState {
     activeDeptDB: DepartmentDB | null;
-    activeInstitutions: Institution[];
     departmentDBs: DepartmentDB[];
     deptDBsLoading: boolean;
-    fedInstitutions: FederalInstitution[];
-    fedInstitutionFilter: FedInstitutionFilter;
-    fedInstitutionTypes: FederalEntityType[];
-    fedInstitutionsLoading: boolean;
-    institutionsLoading: boolean;
-    institutionFilter: InstitutionFilter;
-    institutionTotalCnt: number;
-    institutionTypes: InstitutionType[];
     searchTxt: string;
-    selectedInstitutionIndices: Array<number> | string;
     showDeptDBs: boolean;
-    states: Array<State>;
 }
 
-export interface InstitutionDBState {
+export interface InstitutionState {
     activeDeptDB: DepartmentDB | null;
     activeInstitutions: Institution[];
     institutionsLoading: boolean;
@@ -25,6 +16,14 @@ export interface InstitutionDBState {
     institutionTotalCnt: number;
     institutionTypes: InstitutionType[];
     selectedInstitutionIndices: number[] | string;
+    states: Array<State>;
+}
+
+export interface FederalInstitutionState {
+    fedInstitutions: FederalInstitution[];
+    fedInstitutionFilter: FedInstitutionFilter;
+    fedInstitutionTypes: FederalEntityType[];
+    fedInstitutionsLoading: boolean;
     states: Array<State>;
 }
 
@@ -59,7 +58,6 @@ export interface InitAction {
 export interface RequestDepartmentDBsAction {
     type: 'REQUEST_DEPARTMENTDBS';
     searchTxt: string;
-    institutionFilter: InstitutionFilter;
 }
 
 export interface ReceiveDepartmentDBsAction {
@@ -127,7 +125,6 @@ export interface ReceiveInstitutionsAction {
 export interface SelectDeptDBAction {
     type: 'SELECT_DEPTDB';
     activeDeptDB: DepartmentDB;
-    institutionFilter: InstitutionFilter;
 }
 
 export interface UpdateInstitutionSelection {

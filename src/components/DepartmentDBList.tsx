@@ -1,13 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import {DepartmentDB} from '../services/data-types';
 
-interface AppProps {
+interface Props {
     departmentDBs: DepartmentDB[];
     selectDeptDB: (deptDBID: number) => void;
 }
 
-export const DepartmentDBList = (props: AppProps) => {
+export const DepartmentDBList = ({departmentDBs}: Props) => {
     return (
-        props.departmentDBs.map(d => <div>{d.Name}</div>)
+        departmentDBs.map(d => <div>{d.Name}</div>)
     );
 };
+
+export default DepartmentDBList;
