@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Card } from 'antd';
+import DepartmentDBsContainer from './DepartmentDBsContainer';
+// import DepartmentDBList from '../components/DepartmentDBList';
 import 'antd/dist/antd.css';
 // import { connect } from 'react-redux';
 // import { ApplicationState } from '../store';
@@ -36,8 +37,9 @@ export default class StoreContainer extends Component<{}, AppState> {
         return (
             <div>
                 <button onClick={this.toggle}>On</button>
+
                 <AnimatedAside isOn={this.state.isOn} toggle={this.toggle} >
-                    <Card style={{width: 300}} title={'Rico Alexander'} loading={true} />
+                    <DepartmentDBsContainer />
                 </AnimatedAside>
             </div>
         );

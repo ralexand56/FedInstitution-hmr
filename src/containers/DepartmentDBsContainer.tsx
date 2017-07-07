@@ -1,5 +1,9 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import DepartmentDBList from '../components/DepartmentDBList';
+import {
+    ApplicationState,
+} from '../store';
 import {
     DepartmentDBState,
 } from './../services/data-types';
@@ -12,15 +16,18 @@ type Props = DepartmentDBState &
 export class DepartmentDBsContainer extends Component<Props, {}> {
 
     render() {
+        let { departmentDBs, selectDeptDB } = this.props;
 
         return (
             <DepartmentDBList
+                departmentDBs={departmentDBs}
+                selectDeptDB={selectDeptDB}
             />
         );
     }
 }
 
 export default connect(
-    (state: DepartmentDBState) => state,
+    (state: ApplicationState) => state.departmentDBs,
     actions.actionCreators
 )(DepartmentDBsContainer);
