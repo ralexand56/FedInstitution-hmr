@@ -28,6 +28,6 @@ export class DepartmentDBsContainer extends Component<Props, {}> {
 }
 
 export default connect(
-    (state: ApplicationState) => state.departmentDBs,
+    (state: ApplicationState) => state.departmentDBSlice,
     actions.actionCreators
 )(DepartmentDBsContainer);

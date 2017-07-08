@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
+import InstitutionsContainer from './InstitutionsContainer';
 import DepartmentDBsContainer from './DepartmentDBsContainer';
 // import DepartmentDBList from '../components/DepartmentDBList';
 import 'antd/dist/antd.css';
@@ -37,7 +38,7 @@ export default class StoreContainer extends Component<{}, AppState> {
         return (
             <div>
                 <button onClick={this.toggle}>On</button>
-
+                <InstitutionsContainer />
                 <AnimatedAside isOn={this.state.isOn} toggle={this.toggle} >
                     <DepartmentDBsContainer />
                 </AnimatedAside>
@@ -45,8 +46,3 @@ export default class StoreContainer extends Component<{}, AppState> {
         );
     }
 }
-
-// export default connect(
-//     (state: ApplicationState) => state.departmentDBs,
-//     DepartmentDBStore.actionCreators
-// )(StoreContainer);

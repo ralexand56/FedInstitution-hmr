@@ -13,8 +13,12 @@ const styles = {
     } as React.CSSProperties
 };
 
-const AnimatedAside = (props: { isOn: boolean, toggle: () => void,  children?: {} }) => {
-    let { isOn, toggle } = props;
+const AnimatedAside = (props: { isOn: boolean, toggle: () => void, children?: {}, bgColor?: string }) => {
+    let {
+        isOn,
+        toggle,
+        bgColor
+    } = props;
 
     return (
         <Motion
@@ -28,7 +32,14 @@ const AnimatedAside = (props: { isOn: boolean, toggle: () => void,  children?: {
         >
             {
                 m =>
-                    <div style={{ ...styles.aside, marginRight: m.right, opacity: m.opacity }}>
+                    <div
+                        style={{
+                            ...styles.aside,
+                            marginRight: m.right,
+                            opacity: m.opacity,
+                            backgroundColor: bgColor || '#3D483E'
+                        }}
+                    >
                         <button onClick={toggle}>X</button>
                         {props.children}
                     </div>

@@ -142,6 +142,6 @@ export class DepartmentDBsContainer extends Component<DepartmentDBProps, AppStat
 }
 
 export default connect(
-    (state: ApplicationState) => state.departmentDBs,
+    (state: ApplicationState) => state.departmentDBSlice,
     DepartmentDBActions.actionCreators
 )(DepartmentDBsContainer);

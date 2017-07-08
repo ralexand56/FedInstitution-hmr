@@ -12,15 +12,18 @@ const DepartmentDBList: React.SFC<Props> = ({ departmentDBs, selectDeptDB }) => 
     return (
         <div>
             {
-                departmentDBs.map(d => <Card
-                    key={d.DeptDBID}
-                    style={{ width: 300 }}
-                    title={d.Name}
-                    loading={true}
-                    content={ <button onClick={() => selectDeptDB(d)} >Load</button>}
-                >
-                   
-                </Card>)}
+                departmentDBs.map(d =>
+                    <div
+                        key={d.DeptDBID}
+                        onClick={() => selectDeptDB(d)}
+                    >
+                        <Card
+                            bordered={true}
+                            style={{ width: 300, marginBottom: 20}}
+                            title={d.Name}
+                            loading={true}
+                        />
+                    </div>)}
         </div>
     );
 };

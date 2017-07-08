@@ -15,7 +15,7 @@ export interface InstitutionState {
     institutionFilter: InstitutionFilter;
     institutionTotalCnt: number;
     institutionTypes: InstitutionType[];
-    selectedInstitutionIndices: number[] | string;
+    selectedInstitutionIDs: number[];
     states: Array<State>;
 }
 
@@ -129,7 +129,7 @@ export interface SelectDeptDBAction {
 
 export interface UpdateInstitutionSelection {
     type: 'UPDATE_INSTITUTION_SELECTION';
-    indices: string | Array<number>;
+    indices: number[];
 }
 
 export interface Department {

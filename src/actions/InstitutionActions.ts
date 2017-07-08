@@ -36,7 +36,7 @@ export const actionCreators = {
         });
     },
 
-    updateInstitutionSelection: (indices: string | number[]) => {
+    updateInstitutionSelection: (indices: number[]) => {
         return {
             type: 'UPDATE_INSTITUTION_SELECTION', indices: indices
         };

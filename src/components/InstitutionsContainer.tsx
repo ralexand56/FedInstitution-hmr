@@ -108,7 +108,7 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
     }
 
     handleToggleSelection(rows: number[] | string) {
-        this.props.updateInstitutionSelection(rows);
+        // this.props.updateInstitutionSelection(rows);
     }
 
     handleStartsWithToggle(e: React.FormEvent<{}>, isInputChecked: boolean) {
@@ -137,14 +137,14 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
             institutionFilter,
             institutionTotalCnt,
             institutionTypes,
-            selectedInstitutionIndices,
+            selectedInstitutionIDs,
             states,
          } = this.props;
 
         let arr: number[] = [];
 
-        if (typeof (selectedInstitutionIndices) !== 'string') {
-            arr = selectedInstitutionIndices;
+        if (typeof (selectedInstitutionIDs) !== 'string') {
+            arr = selectedInstitutionIDs;
         }
 
         return (
@@ -159,7 +159,7 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
                         )}
                     </ToolbarGroup>
                     <ToolbarGroup>
-                        <ToolbarTitle text={`Selection: ${selectedInstitutionIndices.length}`} />
+                        <ToolbarTitle text={`Selection: ${selectedInstitutionIDs.length}`} />
                     </ToolbarGroup>
                 </Toolbar>
                 <Toolbar style={{ height: 35, fontSize: 20 }}>
@@ -324,6 +324,6 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
 }
 
 export default connect(
-    (state: ApplicationState) => state.institutions,
+    (state: ApplicationState) => state.institutionSlice,
     InstitutionActions.actionCreators
 )(InstitutionsContainer);

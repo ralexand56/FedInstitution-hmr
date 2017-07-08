@@ -11,13 +11,13 @@ const unloadedState: InstitutionState = {
         searchTxt: '',
         isStartsWith: true,
         RSSDID: null,
-        selectedAssignmentFilter: 2,
+        selectedAssignmentFilter: 1,
         selectedStates: [''],
         selectedTypes: [0],
     },
     institutionTotalCnt: 0,
     institutionTypes: [],
-    selectedInstitutionIndices: [],
+    selectedInstitutionIDs: [],
     states: [],
 };
 
@@ -92,7 +92,7 @@ export const reducer: Reducer<InstitutionState> = (state: InstitutionState, acti
 
             return {
                 ...state,
-                selectedInstitutionIndices: action.indices,
+                selectedInstitutionIDs: action.indices,
             };
 
         default:

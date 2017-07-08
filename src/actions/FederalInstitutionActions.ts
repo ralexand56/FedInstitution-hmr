@@ -28,7 +28,7 @@ export const actionCreators = {
                         dispatch,
                         deptDBID,
                         rssDID,
-                        getState().institutions.activeInstitutions[i].CustomID);
+                        getState().institutionSlice.activeInstitutions[i].CustomID);
                 });
             }
 
