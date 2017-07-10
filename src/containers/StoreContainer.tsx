@@ -4,6 +4,7 @@ import InstitutionsContainer from './InstitutionsContainer';
 import DepartmentDBsContainer from './DepartmentDBsContainer';
 // import DepartmentDBList from '../components/DepartmentDBList';
 import 'antd/dist/antd.css';
+import { Button } from 'antd';
 // import { connect } from 'react-redux';
 // import { ApplicationState } from '../store';
 import AnimatedAside from '../components/AnimatedAside';
@@ -37,11 +38,11 @@ export default class StoreContainer extends Component<{}, AppState> {
     render() {
         return (
             <div>
-                <button onClick={this.toggle}>On</button>
                 <InstitutionsContainer />
                 <AnimatedAside isOn={this.state.isOn} toggle={this.toggle} >
                     <DepartmentDBsContainer />
                 </AnimatedAside>
+                 <Button onClick={this.toggle} type="primary" ghost={true}>Show DeptDB</Button>
             </div>
         );
     }

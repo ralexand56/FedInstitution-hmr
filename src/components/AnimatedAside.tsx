@@ -1,15 +1,16 @@
 import { Motion, spring, presets } from 'react-motion';
 import * as React from 'react';
+import { Button } from 'antd';
 
 const styles = {
     aside: {
+        boxShadow: '-3px 0px 5px',
         top: 0,
         right: 0,
         bottom: 0,
-        overflowY: 'auto',
+        overflowY: 'hidden',
         padding: 10,
         position: 'absolute',
-        borderLeft: 'solid 1px',
     } as React.CSSProperties
 };
 
@@ -37,10 +38,10 @@ const AnimatedAside = (props: { isOn: boolean, toggle: () => void, children?: {}
                             ...styles.aside,
                             marginRight: m.right,
                             opacity: m.opacity,
-                            backgroundColor: bgColor || '#3D483E'
+                            backgroundColor: bgColor || '#666666'
                         }}
                     >
-                        <button onClick={toggle}>X</button>
+                        <Button onClick={toggle} ghost={true}>X</Button>
                         {props.children}
                     </div>
             }

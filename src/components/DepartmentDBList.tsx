@@ -11,6 +11,7 @@ const DepartmentDBList: React.SFC<Props> = ({ departmentDBs, selectDeptDB }) => 
 
     return (
         <div>
+            <h2 style={{color: 'white', margin: '8px 0'}}>DEPARTMENT DATABASES</h2>
             {
                 departmentDBs.map(d =>
                     <div

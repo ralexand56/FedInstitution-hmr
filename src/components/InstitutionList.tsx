@@ -25,6 +25,16 @@ const columns = [
         key: 'Name',
     },
     {
+        title: 'State',
+        dataIndex: 'StateCode',
+        key: 'StateCode',
+    },
+    {
+        title: 'Type',
+        dataIndex: 'InstitutionType.Name',
+        key: 'InstitutionTypeID',
+    },
+    {
         title: 'ID',
         dataIndex: 'InstitutionID',
         key: 'InstitutionID',
@@ -47,11 +57,16 @@ export const InstitutionList: React.SFC<Props> =
         };
 
         return (
-            <div><h1 style={{ color: activeDeptDB.Color }}>{activeDeptDB.Name}
-                <small style={{ color: activeDeptDB.Department.Color }}>
-                    |{activeDeptDB.Department.Name}
-                </small>
-            </h1>
+            <div>
+                <h1 style={{ backgroundColor: '#A4C2DC', color: 'white', padding: 10 }}>{activeDeptDB.Name}
+                    <small style={{ color: 'white' }}> |
+                    {activeDeptDB.Department.Name}
+                    </small>
+                    {
+                        (selectedInstitutionIDs.length > 0 &&
+                            (<span> SELECTED | {selectedInstitutionIDs.length}</span>))
+                    }
+                </h1>
                 <Input
                     placeholder="...search name"
                     onChange={(e) => setInstitutionFilter({ ...institutionFilter, searchTxt: e.currentTarget.value })}
