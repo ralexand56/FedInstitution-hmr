@@ -19,6 +19,7 @@ export class InstitutionContainer extends Component<Props, {}> {
         let {
             activeDeptDB,
             activeInstitutions,
+            assignmentOptions,
             institutionFilter,
             selectedInstitutionIDs,
             setInstitutionFilter,
@@ -31,6 +32,7 @@ export class InstitutionContainer extends Component<Props, {}> {
                 <InstitutionList
                     activeDeptDB={activeDeptDB}
                     activeInstitutions={activeInstitutions}
+                    assignmentOptions= {assignmentOptions}
                     institutionFilter={institutionFilter}
                     setInstitutionFilter={setInstitutionFilter}
                     selectedInstitutionIDs={selectedInstitutionIDs}

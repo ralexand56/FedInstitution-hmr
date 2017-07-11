@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import 'core-js';
+
 // import App from './App';
 import { AppContainer } from 'react-hot-loader';
 // import DepartmentDBsView from './components/DepartmentDBsView';

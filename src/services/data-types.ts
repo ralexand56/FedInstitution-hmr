@@ -11,6 +11,7 @@ export interface DepartmentDBState {
 export interface InstitutionState {
     activeDeptDB: DepartmentDB | null;
     activeInstitutions: Institution[];
+    assignmentOptions: string[];
     institutionsLoading: boolean;
     institutionFilter: InstitutionFilter;
     institutionTotalCnt: number;
@@ -227,7 +228,7 @@ export interface InstitutionFilter {
     RSSDID: number | null;
     searchTxt: string;
     isStartsWith: boolean;
-    selectedAssignmentFilter: number;
+    selectedAssignmentFilter: string;
     selectedStates: string[];
     selectedTypes: number[];
 }

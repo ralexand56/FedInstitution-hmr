@@ -4,7 +4,7 @@ import InstitutionsContainer from './InstitutionsContainer';
 import DepartmentDBsContainer from './DepartmentDBsContainer';
 // import DepartmentDBList from '../components/DepartmentDBList';
 import 'antd/dist/antd.css';
-import { Button } from 'antd';
+import { Button, Layout, Icon } from 'antd';
 // import { connect } from 'react-redux';
 // import { ApplicationState } from '../store';
 import AnimatedAside from '../components/AnimatedAside';
@@ -20,6 +20,8 @@ interface AppState {
     selectedState: Array<string> | null;
     isOn: boolean;
 }
+
+const Header = Layout.Header;
 
 export default class StoreContainer extends Component<{}, AppState> {
     constructor(props: {}) {
@@ -37,13 +39,20 @@ export default class StoreContainer extends Component<{}, AppState> {
 
     render() {
         return (
-            <div>
+            <Layout>
+                <Header style={{ padding: 0 }}>
+                    <h1 style={{ color: 'white' }}>
+                        <Button style={{ margin: '0 10px' }} onClick={this.toggle} ghost={true}>
+                            <Icon type="menu-fold" />
+                        </Button>
+                        FEDERAL INSTITUTION MANAGER
+                        </h1>
+                </Header>
                 <InstitutionsContainer />
                 <AnimatedAside isOn={this.state.isOn} toggle={this.toggle} >
                     <DepartmentDBsContainer />
                 </AnimatedAside>
-                 <Button onClick={this.toggle} type="primary" ghost={true}>Show DeptDB</Button>
-            </div>
+            </Layout>
         );
     }
 }

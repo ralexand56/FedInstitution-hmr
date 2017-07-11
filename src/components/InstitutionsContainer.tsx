@@ -64,7 +64,7 @@ const handleAssignmentFilterChanged = (
     value: number,
     props: InstitutionsProps,
 ) => {
-    props.setInstitutionFilter({ ...props.institutionFilter, selectedAssignmentFilter: value });
+    // props.setInstitutionFilter({ ...props.institutionFilter, selectedAssignmentFilter: value });
 };
 
 interface AppState {

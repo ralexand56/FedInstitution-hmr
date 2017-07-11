@@ -157,7 +157,7 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         include: paths.appSrc,
-        loaders: ['react-hot', require.resolve('ts-loader')]
+        loaders: [require.resolve('ts-loader')]
       },
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.

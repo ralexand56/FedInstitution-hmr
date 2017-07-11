@@ -181,12 +181,12 @@ export const fetchInstitutions =
         let reqTxt = `${baseUrl}Institutions?$filter=DeptDBID eq ${instFilter.deptDBID}`;
 
         switch (instFilter.selectedAssignmentFilter) {
-            case 2: {
+            case 'Unassigned': {
                 reqTxt += ` and RSSDID eq null`;
                 break;
             }
 
-            case 3: {
+            case 'Assigned': {
                 reqTxt += ` and RSSDID ne null`;
                 break;
             }

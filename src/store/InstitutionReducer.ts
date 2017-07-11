@@ -5,13 +5,14 @@ import { Reducer } from 'redux';
 const unloadedState: InstitutionState = {
     activeDeptDB: null,
     activeInstitutions: [],
+    assignmentOptions: ['All', 'Assigned', 'Unassigned'],
     institutionsLoading: false,
     institutionFilter: {
         deptDBID: 1,
         searchTxt: '',
         isStartsWith: true,
         RSSDID: null,
-        selectedAssignmentFilter: 1,
+        selectedAssignmentFilter: 'All',
         selectedStates: [''],
         selectedTypes: [0],
     },
