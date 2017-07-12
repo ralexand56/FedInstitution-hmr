@@ -2,9 +2,14 @@ import * as React from 'react';
 import { Component } from 'react';
 import InstitutionsContainer from './InstitutionsContainer';
 import DepartmentDBsContainer from './DepartmentDBsContainer';
+import FederalInstitutionsContainer from './FederalInstitutionsContainer';
 // import DepartmentDBList from '../components/DepartmentDBList';
 import 'antd/dist/antd.css';
-import { Button, Layout, Icon } from 'antd';
+import {
+    Button,
+    Layout,
+    Icon
+} from 'antd';
 // import { connect } from 'react-redux';
 // import { ApplicationState } from '../store';
 import AnimatedAside from '../components/AnimatedAside';
@@ -22,6 +27,7 @@ interface AppState {
 }
 
 const Header = Layout.Header;
+const Content = Layout.Content;
 
 export default class StoreContainer extends Component<{}, AppState> {
     constructor(props: {}) {
@@ -39,7 +45,11 @@ export default class StoreContainer extends Component<{}, AppState> {
 
     render() {
         return (
-            <Layout>
+            <Layout
+                style={{
+                    height: '100%',
+                }}
+            >
                 <Header style={{ padding: 0 }}>
                     <h1 style={{ color: 'white' }}>
                         <Button style={{ margin: '0 10px' }} onClick={this.toggle} ghost={true}>
@@ -48,7 +58,20 @@ export default class StoreContainer extends Component<{}, AppState> {
                         FEDERAL INSTITUTION MANAGER
                         </h1>
                 </Header>
-                <InstitutionsContainer />
+                <Content
+                    style={
+                        {
+                            display: 'flex',
+                            flexDirection: 'column',
+                        } as React.CSSProperties}
+                >
+                    <div style={{ flex: 1, overflow: 'auto' }}>
+                        <InstitutionsContainer />
+                    </div>
+                    <div>
+                        <FederalInstitutionsContainer />
+                    </div>
+                </Content>
                 <AnimatedAside isOn={this.state.isOn} toggle={this.toggle} >
                     <DepartmentDBsContainer />
                 </AnimatedAside>

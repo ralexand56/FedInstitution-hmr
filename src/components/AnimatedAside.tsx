@@ -38,7 +38,7 @@ const AnimatedAside = (props: { isOn: boolean, toggle: () => void, children?: {}
                             ...styles.aside,
                             marginRight: m.right,
                             opacity: m.opacity,
-                            backgroundColor: bgColor || '#666666'
+                            background: bgColor || '#666666'
                         }}
                     >
                         <Button onClick={toggle} ghost={true}>X</Button>
