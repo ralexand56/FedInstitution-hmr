@@ -10,6 +10,11 @@ import {
 } from './FetchActions';
 
 export const actionCreators = {
+    updateFedInstitutionFilter: (fedInstitutionFilter: FedInstitutionFilter):
+        AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
+            dispatch({ type: 'SET_FEDINSTITUTION_FILTER', fedInstitutionFilter: fedInstitutionFilter });
+        },
+
     setFedInstitutionFilter: (fedInstitutionFilter: FedInstitutionFilter):
         AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
             fetchFederalInstitutions(dispatch, fedInstitutionFilter);

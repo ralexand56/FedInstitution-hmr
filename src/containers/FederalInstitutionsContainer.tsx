@@ -3,7 +3,7 @@ import { Component } from 'react';
 import {
     ApplicationState,
 } from '../store';
-// import { FederalInstitutionList } from '../components/FederalInstitutionList';
+import FederalInstitutionList from '../components/FederalInstitutionList';
 import {
     FederalInstitutionState,
 } from './../services/data-types';
@@ -16,10 +16,9 @@ type Props = FederalInstitutionState &
 export class FederalInstitutionsContainer extends Component<Props, {}> {
 
     render() {
-        let { fedInstitutions } = this.props;
 
         return (
-            <div>{fedInstitutions && fedInstitutions.length}</div>
+            <FederalInstitutionList {...this.props} />
         );
     }
 }

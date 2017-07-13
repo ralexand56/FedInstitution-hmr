@@ -10,6 +10,12 @@ import {
 } from './FetchActions';
 
 export const actionCreators = {
+    updateInstitutionFilter: (instFilter: InstitutionFilter):
+        AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
+
+            dispatch({ type: 'SET_INSTITUTION_FILTER', institutionFilter: instFilter });
+        },
+
     setInstitutionFilter: (instFilter: InstitutionFilter):
         AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
             fetchInstitutions(dispatch, instFilter);

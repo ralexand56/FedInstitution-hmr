@@ -16,28 +16,11 @@ type Props = InstitutionState &
 export class InstitutionContainer extends Component<Props, {}> {
 
     render() {
-        let {
-            activeDeptDB,
-            activeInstitutions,
-            assignmentOptions,
-            institutionFilter,
-            selectedInstitutionIDs,
-            setInstitutionFilter,
-            updateInstitutionSelection,
-        } = this.props;
 
         return (
-            activeDeptDB &&
-            (
-                <InstitutionList
-                    activeDeptDB={activeDeptDB}
-                    activeInstitutions={activeInstitutions}
-                    assignmentOptions= {assignmentOptions}
-                    institutionFilter={institutionFilter}
-                    setInstitutionFilter={setInstitutionFilter}
-                    selectedInstitutionIDs={selectedInstitutionIDs}
-                    updateInstitutionSelection={updateInstitutionSelection}
-                />)
+            <InstitutionList
+                {...this.props}
+            />
         );
     }
 }

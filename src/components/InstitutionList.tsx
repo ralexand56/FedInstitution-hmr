@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {
-    DepartmentDB,
-    Institution,
-    InstitutionFilter
+    InstitutionState,
+    InstitutionFilter,
+    State,
 } from '../services/data-types';
 import {
     Layout,
@@ -10,20 +10,15 @@ import {
     Table,
     Input,
 } from 'antd';
+import * as actions from '../actions/InstitutionActions';
 
 const Option = Select.Option;
 const Header = Layout.Header;
 const Content = Layout.Content;
+const Search = Input.Search;
 
-interface Props {
-    activeDeptDB: DepartmentDB;
-    activeInstitutions: Institution[];
-    assignmentOptions: string[];
-    institutionFilter: InstitutionFilter;
-    selectedInstitutionIDs: number[];
-    setInstitutionFilter: (instFilter: InstitutionFilter) => {};
-    updateInstitutionSelection: (ids: number[]) => {};
-}
+type Props = InstitutionState &
+    typeof actions.actionCreators;
 
 const columns = [
     {
@@ -71,6 +66,8 @@ export const InstitutionList: React.SFC<Props> =
         institutionFilter,
         setInstitutionFilter,
         selectedInstitutionIDs,
+        states,
+        updateInstitutionFilter,
         updateInstitutionSelection,
      }) => {
 
@@ -83,27 +80,52 @@ export const InstitutionList: React.SFC<Props> =
             <Layout>
                 <Header
                     style={
-                        { color: 'white', padding: 0, display: 'flex', alignItems: 'center' } as React.CSSProperties}
+                        {
+                            color: 'white',
+                            padding: 10,
+                            display: 'flex',
+                            alignItems: 'center'
+                        } as React.CSSProperties}
                 >
-                    <h2 style={{ color: 'white', margin: '0 10px', textTransform: 'uppercase' } as React.CSSProperties}>
-                        {activeDeptDB.Name}
-                        <small> | {activeDeptDB.Department.Name}
+                    <h2 style={{ color: 'white', textTransform: 'uppercase' } as React.CSSProperties}>
+                        {activeDeptDB && activeDeptDB.Name}
+                        <small> | {activeDeptDB && activeDeptDB.Department.Name}
                         </small>
                     </h2>
-                    <Input
+                    <Search
                         placeholder="...search name"
-                        onChange={(e) =>
-                            setInstitutionFilter({ ...institutionFilter, searchTxt: e.currentTarget.value })}
-                        style={{ width: 200, margin: '0 8px' }}
+                        onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                            updateInstitutionFilter({
+                                ...institutionFilter, searchTxt: e.currentTarget.value
+                            })
+                        }
+                        onSearch={(value: string) =>
+                            setInstitutionFilter({ ...institutionFilter, searchTxt: value })}
+                        style={{ width: 200, margin: '0 10px' }}
                     />
+                    <span>
+                        <Select
+                            placeholder="select assignment"
+                            defaultValue={institutionFilter.selectedAssignmentFilter}
+                            onChange={(selVal: string) =>
+                                handleAssignmentChanged(selVal, institutionFilter, setInstitutionFilter)}
+                        >
+                            {assignmentOptions.map(o => <Option key={o}>{o}</Option>)}
+                        </Select>
+                    </span>
                     <Select
-                        placeholder="select assignment"
-                        defaultValue={institutionFilter.selectedAssignmentFilter}
-                        onChange={(selVal: string) =>
-                            handleAssignmentChanged(selVal, institutionFilter, setInstitutionFilter)}
+                        mode="multiple"
+                        placeholder="select state"
+                        onChange={
+                            (val: string[]) => handleSelectedStateChanged(val, institutionFilter, setInstitutionFilter)
+                        }
+                        style={{ width: 200, margin: '0 10px' }}
                     >
-                        {assignmentOptions.map(o => <Option key={o}>{o}</Option>)}
+                        {renderStates(states)}
                     </Select>
+                    <span style={{ margin: '0 10px' }}>
+                        Count | {activeInstitutions.length}
+                    </span>
                 </Header>
                 <Content>
                     <Table
@@ -121,6 +143,22 @@ const handleAssignmentChanged = (
     selVal: string,
     institutionFilter: InstitutionFilter, setInstitutionFilter: (instFilter: InstitutionFilter) => {}) => {
     setInstitutionFilter({ ...institutionFilter, selectedAssignmentFilter: selVal });
+};
+
+const handleSelectedStateChanged =
+    (
+        value: string[],
+        instFilter: InstitutionFilter,
+        setInstitutionFilter: (f: InstitutionFilter) => {}, ) => {
+        setInstitutionFilter({ ...instFilter, selectedStates: value });
+    };
+
+const renderStates = (states: State[]) => {
+    return (
+        states.map(st =>
+            <Option key={st.StateCode}>{st.StateCode}</Option>
+        )
+    );
 };
 
 export default InstitutionList;

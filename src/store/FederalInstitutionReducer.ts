@@ -6,12 +6,13 @@ import {
 
 const unloadedState: FederalInstitutionState = {
     fedInstitutions: [],
+    fedInstitutionsCnt: 0,
     fedInstitutionFilter: {
         RSSDID: undefined,
         searchTxt: '',
         isStartsWith: true,
         searchBankingTypes: false,
-        searchHoldingCompanies: true,
+        searchHoldingCompanies: false,
         selectedStates: [''],
         selectedTypes: [''],
     },

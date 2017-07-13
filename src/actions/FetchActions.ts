@@ -106,19 +106,17 @@ export const fetchFederalInstitutions =
                 fedInstitutions: [],
             });
 
-            console.dir(searchOptions.searchTxt);
-
             return;
         }
 
         let searchStr = (searchOptions.RSSDID === undefined
             || searchOptions.RSSDID.toString().trim() === '')
             ? `${baseUrl}FederalInstitutions?$filter=IsActive%20eq%20true`
-            : `${baseUrl}FederalInstitutions?$filter=RSSDID eq ${searchOptions.RSSDID}
-                &$expand=Institutions,FederalEntityType,HoldingCompany`;
+            : `${baseUrl}FederalInstitutions?$filter=RSSDID eq ${searchOptions.RSSDID}`;
 
         if (searchOptions.RSSDID === undefined ||
             searchOptions.RSSDID.toString().trim() === '') {
+            // searchStr += `&$expand=Institutions,FederalEntityType,HoldingCompany`;
             let nameSearch = encodeURIComponent(searchOptions.searchTxt);
 
             searchStr += ` and IsHCCode ne 1`;
@@ -144,18 +142,18 @@ export const fetchFederalInstitutions =
             }
 
             if (searchOptions.isStartsWith) {
-                let searchHoldingTxt = searchOptions.searchHoldingCompanies
-                    && `or startswith(HoldingCompany/FullName, '${nameSearch}')`;
+                let searchHoldingTxt = searchOptions.searchHoldingCompanies ?
+                    `or startswith(HoldingCompany/FullName, '${nameSearch}')` : '';
 
                 searchStr += ` and (startswith(FullName, '${nameSearch}') ${searchHoldingTxt})`;
             } else {
-                let searchHoldingTxt = searchOptions.searchHoldingCompanies
-                    && `or contains(HoldingCompany/FullName, '${nameSearch}')`;
+                let searchHoldingTxt = searchOptions.searchHoldingCompanies ?
+                    `or contains(HoldingCompany/FullName, '${nameSearch}')` : '';
 
                 searchStr += ` and (contains(FullName, '${nameSearch}') ${searchHoldingTxt})`;
             }
 
-            searchStr += `&$top=50&$expand=Institutions,FederalEntityType,HoldingCompany&$orderby=FullName,StateCode`;
+            searchStr += `&$expand=Institutions,FederalEntityType,HoldingCompany&$orderby=FullName,StateCode`;
         }
         // console.dir(searchStr);
 
@@ -216,7 +214,7 @@ export const fetchInstitutions =
             reqTxt += ` and (${typesTxt})`;
         }
 
-        reqTxt += `&$top=60&$expand=FederalInstitution,InstitutionType&$orderby=Name,StateCode&$count=true`;
+        reqTxt += `&$expand=FederalInstitution,InstitutionType&$orderby=Name,StateCode&$count=true`;
         // console.dir(reqTxt);
         fetch(reqTxt)
             .then(response => response.json())
@@ -250,25 +248,25 @@ export const fetchStates = (dispatch: (action: KnownAction) => void) => {
 
 export const fetchDepartmentDBs =
     (dispatch: (action: KnownAction) => void, searchTxt: string) => {
-    let nameFilter = `$filter=startswith(Name, '${searchTxt}')&`;
-    let reqTxt = `${baseUrl}DepartmentDBs?${searchTxt && nameFilter}$expand=Department,Institutions`;
+        let nameFilter = `$filter=startswith(Name, '${searchTxt}')&`;
+        let reqTxt = `${baseUrl}DepartmentDBs?${searchTxt && nameFilter}$expand=Department,Institutions`;
 
-    fetch(reqTxt)
-        .then(response => response.json())
-        .then(depts => {
-            let deptsArr: DepartmentDB[] = depts.value;
+        fetch(reqTxt)
+            .then(response => response.json())
+            .then(depts => {
+                let deptsArr: DepartmentDB[] = depts.value;
 
-            deptsArr.forEach((d: DepartmentDB) => {
-                d.Pct = d.Institutions.length === 0 ? 0 :
-                    (d.Institutions.filter(x => x.RSSDID).length / d.Institutions.length);
+                deptsArr.forEach((d: DepartmentDB) => {
+                    d.Pct = d.Institutions.length === 0 ? 0 :
+                        (d.Institutions.filter(x => x.RSSDID).length / d.Institutions.length);
+                });
+
+                let activeDeptDB = depts.value[0];
+
+                dispatch({ type: 'RECEIVE_DEPARTMENTDBS', searchTxt: searchTxt, departmentDBs: depts.value });
+                dispatch({ type: 'SELECT_DEPTDB', activeDeptDB });
             });
-
-            let activeDeptDB = depts.value[0];
-
-            dispatch({ type: 'RECEIVE_DEPARTMENTDBS', searchTxt: searchTxt, departmentDBs: depts.value });
-            dispatch({ type: 'SELECT_DEPTDB', activeDeptDB });
-        });
-};
+    };
 
 export const updateModifiedDate = (dbid: number) => {
     return fetch(`DepartmentDBs(${dbid})`, {

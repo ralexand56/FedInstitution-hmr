@@ -22,6 +22,7 @@ export interface InstitutionState {
 
 export interface FederalInstitutionState {
     fedInstitutions: FederalInstitution[];
+    fedInstitutionsCnt: number;
     fedInstitutionFilter: FedInstitutionFilter;
     fedInstitutionTypes: FederalEntityType[];
     fedInstitutionsLoading: boolean;
