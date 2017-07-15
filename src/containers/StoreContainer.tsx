@@ -3,6 +3,7 @@ import { Component } from 'react';
 import InstitutionsContainer from './InstitutionsContainer';
 import DepartmentDBsContainer from './DepartmentDBsContainer';
 import FederalInstitutionsContainer from './FederalInstitutionsContainer';
+import Staggered from '../components/Staggered';
 // import DepartmentDBList from '../components/DepartmentDBList';
 import 'antd/dist/antd.css';
 import {
@@ -73,6 +74,12 @@ export default class StoreContainer extends Component<{}, AppState> {
                     </div>
                 </Content>
                 <AnimatedAside isOn={this.state.isOn} toggle={this.toggle} >
+                    <Staggered>
+                        <h2>Rico</h2>
+                        <h2>Hendry</h2>
+                        <h2>Augi</h2>
+                        <h2>Luther</h2>
+                    </Staggered>
                     <DepartmentDBsContainer />
                 </AnimatedAside>
             </Layout>

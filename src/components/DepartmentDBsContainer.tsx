@@ -108,7 +108,7 @@ export class DepartmentDBsContainer extends Component<DepartmentDBProps, AppStat
         let { searchTxt } = this.state;
 
         return (
-            <Paper style={{ ...styles.mainContainer, display: showDeptDBs ? 'inline' : 'none' }} open={true} zDepth={2}>
+            <Paper style={{ ...styles.mainContainer, display: showDeptDBs ? 'inline' : 'none' }} zDepth={2}>
                 <AppBar
                     titleStyle={{ fontSize: 20 }}
                     iconElementLeft={<IconButton><NavigationClose /></IconButton>}
