@@ -16,12 +16,10 @@ type Props = DepartmentDBState &
 export class DepartmentDBsContainer extends Component<Props, {}> {
 
     render() {
-        let { departmentDBs, selectDeptDB } = this.props;
 
         return (
             <DepartmentDBList
-                departmentDBs={departmentDBs}
-                selectDeptDB={selectDeptDB}
+                {...this.props}
             />
         );
     }

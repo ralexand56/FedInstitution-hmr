@@ -225,7 +225,7 @@ export interface FederalEntityType {
 }
 
 export interface InstitutionFilter {
-    deptDBID: number;
+    deptDBID: number | null;
     RSSDID: number | null;
     searchTxt: string;
     isStartsWith: boolean;

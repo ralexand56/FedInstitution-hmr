@@ -77,7 +77,8 @@ export const reducer: Reducer<InstitutionState> = (state: InstitutionState, acti
                 ...state,
                 activeDeptDB: action.activeDeptDB,
                 institutionFilter: {
-                    ...unloadedState.institutionFilter, deptDBID: action.activeDeptDB.DeptDBID,
+                    ...unloadedState.institutionFilter, 
+                    deptDBID: action.activeDeptDB ? action.activeDeptDB.DeptDBID : null,
                 },
                 activeInstitutions: [],
             };
