@@ -1,47 +1,45 @@
-import *  as React from 'react';
+import * as React from 'react';
 import { Component } from 'react';
 import { TweenMax } from 'gsap';
 
-interface Props {
-    textSize?: number;
-}
+export default class Stagger extends Component<{}, {}> {
+    node: React.ReactNode;
 
-export default class Staggered extends Component<Props, {}> {
-
-    render() {
-        const { children } = this.props;
-
-        if (children && (Array.isArray(children) || typeof children === 'string')) {
-            return (
-                <div>
-                    {
-                        this.renderChildren(children)
-                    }
-                </div>
-            );
-        } else {
-            return null;
-        }
+    componentWillUpdate() {
+        TweenMax.staggerFrom('.gs', 0.7, { autoAlpha: 0 }, 0.3);
     }
 
-    renderChildren = (Children: React.ReactNode) => {
-        if (Children) {
-            if (typeof Children === 'string') {
-                // const strArr = Children.split('');
-                // const { textSize } = this.props;
+    render() {
+        let { children } = this.props;
 
-                // <span
-                //     key={i}
-                //     style={{ opacity: style.opacity, fontSize: textSize ? `${textSize}em` : `2em` }}
-                // >
-                //     {strArr[i]}
-                // </span>
-                // );
-                return null;
-            } else {
+        if (!Array.isArray(children)) {
+            return null;
+        }
 
+        if (typeof children === 'string') {
+            return null;
+        }
+
+        return (
+            <div>
+                {
+                    this.renderChildren(React.Children.toArray(children))
+                }
+            </div>
+        );
+    }
+
+    renderChildren(children: React.ReactChild[]) {
+        if (!children) {
+            return null;
+        }
+
+        return children.map((child: React.ReactChild, i) => {
+            if (typeof child === 'string' || typeof child === 'number') {
                 return null;
             }
-        }
+
+            return React.cloneElement(child, { ...child.props, key: i, className: 'gs' });
+        });
     }
 }

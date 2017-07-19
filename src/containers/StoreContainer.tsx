@@ -12,6 +12,7 @@ import {
 // import { connect } from 'react-redux';
 // import { ApplicationState } from '../store';
 import AnimatedAside from '../components/AnimatedAside';
+import Staggered from '../components/Staggered';
 
 interface AppState {
     selectedState: Array<string> | null;
@@ -47,8 +48,10 @@ export default class StoreContainer extends Component<{}, AppState> {
                         <Button style={{ margin: '0 10px' }} onClick={this.toggle} ghost={true}>
                             <Icon type="menu-fold" />
                         </Button>
-                        FEDERAL INSTITUTION MANAGER
-                        </h1>
+                        <Staggered>
+                            FEDERAL INSTITUTION MANAGER
+                        </Staggered>
+                    </h1>
                 </Header>
                 <Content
                     style={

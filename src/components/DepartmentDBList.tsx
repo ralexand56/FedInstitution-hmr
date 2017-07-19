@@ -6,7 +6,7 @@ import {
     Layout,
 } from 'antd';
 import * as actions from '../actions/DepartmentDBActions';
-import Staggered from '../components/Staggered';
+import Stagger from '../components/Stagger';
 
 const Header = Layout.Header;
 const Content = Layout.Content;
@@ -26,21 +26,24 @@ const DepartmentDBList: React.SFC<Props> = ({ departmentDBs, selectDeptDB, reque
             </Header>
             <Content>
                 <Input placeholder="...search name" onChange={(e) => requestDepartmentDBs(e.currentTarget.value)} />
-                <Staggered>
-                    {
-                        departmentDBs.map(d =>
-                            <div
-                                key={d.DeptDBID}
-                                onClick={() => selectDeptDB(d)}
-                            >
-                                <Card
-                                    bordered={true}
-                                    style={{ width: 300, marginBottom: 20 }}
-                                    title={d.Name}
-                                    loading={true}
-                                />
-                            </div>)}
-                </Staggered>
+                {
+                    departmentDBs &&
+                    <Stagger>
+                        {
+                            departmentDBs.map(d =>
+                                <div
+                                    key={d.DeptDBID}
+                                    onClick={() => selectDeptDB(d)}
+                                >
+                                    <Card
+                                        bordered={true}
+                                        style={{ width: 300, marginBottom: 20 }}
+                                        title={d.Name}
+                                        loading={true}
+                                    />
+                                </div>)}
+                    </Stagger>
+                }
             </Content>
         </Layout>
     );
