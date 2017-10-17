@@ -1,6 +1,14 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { TweenMax } from 'gsap';
+import styled from 'styled-components';
+
+const MainContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: scroll;
+`;
 
 export default class Stagger extends Component<{}, {}> {
     node: React.ReactNode;
@@ -21,11 +29,11 @@ export default class Stagger extends Component<{}, {}> {
         }
 
         return (
-            <div>
+            <MainContainer>
                 {
                     this.renderChildren(React.Children.toArray(children))
                 }
-            </div>
+            </MainContainer>
         );
     }
 

@@ -1,12 +1,28 @@
 import {
     baseUrl,
-    DepartmentDB,
     DepositInstitution,
     FedInstitutionFilter,
-    Institution,
     InstitutionFilter,
     KnownAction,
 } from './../services/data-types';
+
+const assignFed = async (entityName: string, customID: string, rssDID: number) => {
+    const inst = await fetch(`${baseUrl}${entityName}/${customID}`);
+    const foundInst = await inst.json();
+    
+    foundInst.RSSDID = rssDID;
+
+    const updatedInst = await fetch(`${baseUrl}${entityName}/${customID}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        method: 'put',
+        body: JSON.stringify(foundInst)
+    });
+
+    return updatedInst;
+};
 
 export const assignFedByDeptDB = (
     dispatch: (action: KnownAction) => void,
@@ -14,6 +30,14 @@ export const assignFedByDeptDB = (
     let response: Promise<Response>;
 
     switch (deptDBID) {
+        case 6:
+            assignFed('FZInstMasters', instID, rssDID);
+            break;
+
+        case 8:
+            assignFed('INS_Institutions', instID, rssDID);
+            break;
+
         case 1:
             response = fetch(`${baseUrl}DepositInstitutions(${parseInt(instID, 10)})`);
 
@@ -74,10 +98,6 @@ export const assignFedByDeptDB = (
         default:
             break;
     }
-
-    dispatch({
-        type: 'ASSIGN_FEDINSTITUTION',
-    });
 };
 
 export const fetchFederalEntityTypes = (dispatch: (action: KnownAction) => void) => {
@@ -96,18 +116,18 @@ export const fetchFederalInstitutions =
         let selectedStates = searchOptions.selectedStates.filter(x => x !== '');
         let selectedTypes = searchOptions.selectedTypes.filter(x => x !== '');
 
-        if (
-            (searchOptions.searchTxt === undefined || searchOptions.searchTxt.toString().trim() === '')
-            && (searchOptions.RSSDID === undefined || searchOptions.RSSDID!.toString().trim() === '')
-            && (selectedStates.length === 0)
-            && (selectedTypes.length === 0)) {
-            dispatch({
-                type: 'RECEIVE_FEDINSTITUTIONS',
-                fedInstitutions: [],
-            });
+        // if (
+        //     (searchOptions.searchTxt === undefined || searchOptions.searchTxt.toString().trim() === '')
+        //     && (searchOptions.RSSDID === undefined || searchOptions.RSSDID!.toString().trim() === '')
+        //     && (selectedStates.length === 0)
+        //     && (selectedTypes.length === 0)) {
+        //     dispatch({
+        //         type: 'RECEIVE_FEDINSTITUTIONS',
+        //         fedInstitutions: [],
+        //     });
 
-            return;
-        }
+        //     return;
+        // }
 
         let searchStr = (searchOptions.RSSDID === undefined
             || searchOptions.RSSDID.toString().trim() === '')
@@ -156,15 +176,22 @@ export const fetchFederalInstitutions =
             searchStr += `&$expand=Institutions,FederalEntityType,HoldingCompany&$orderby=FullName,StateCode`;
         }
         // console.dir(searchStr);
+        var myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
 
+        var searchStr2 = `${baseUrl}FederalInstitutions`;
         // debugger;
-        fetch(searchStr)
+        fetch(searchStr2, {
+            headers: myHeaders,
+            method: 'post',
+            body: JSON.stringify(searchOptions)
+        })
             .then(response => response.json())
             .then(fedInsts => {
 
                 dispatch({
                     type: 'RECEIVE_FEDINSTITUTIONS',
-                    fedInstitutions: fedInsts.value,
+                    fedInstitutions: fedInsts,
                 });
             });
     };
@@ -177,6 +204,7 @@ export const fetchInstitutions =
         dispatch({ type: 'REQUEST_INSTITUTIONS' });
 
         let reqTxt = `${baseUrl}Institutions?$filter=DeptDBID eq ${instFilter.deptDBID}`;
+        let reqTxt2 = `${baseUrl}Institutions`;
 
         switch (instFilter.selectedAssignmentFilter) {
             case 'Unassigned': {
@@ -216,18 +244,25 @@ export const fetchInstitutions =
 
         reqTxt += `&$expand=FederalInstitution,InstitutionType&$orderby=Name,StateCode&$count=true`;
         // console.dir(reqTxt);
-        fetch(reqTxt)
+        var myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+
+        fetch(reqTxt2, {
+            headers: myHeaders,
+            method: 'post',
+            body: JSON.stringify(instFilter)
+        })
             .then(response => response.json())
             .then(insts => {
-                let institutions: Array<Institution> = insts.value;
+                // let institutions: Array<Institution> = insts;
 
-                institutions.forEach((i: Institution) => {
-                    i.IsSelected = false;
-                });
+                // institutions.forEach((i: Institution) => {
+                //     i.IsSelected = false;
+                // });
 
                 dispatch({
                     type: 'RECEIVE_INSTITUTIONS',
-                    activeInstitutions: institutions,
+                    activeInstitutions: insts,
                     cnt: insts['@odata.count'],
                 });
             }
@@ -237,33 +272,34 @@ export const fetchInstitutions =
 export const fetchInstitutionTypes = (dispatch: (action: KnownAction) => void) => {
     fetch(`${baseUrl}InstitutionTypes`)
         .then(response => response.json())
-        .then(instTypes => dispatch({ type: 'RECEIVE_INSTITUTIONTYPES', instTypes: instTypes.value }));
+        .then(instTypes => dispatch({ type: 'RECEIVE_INSTITUTIONTYPES', instTypes: instTypes }));
 };
 
 export const fetchStates = (dispatch: (action: KnownAction) => void) => {
     fetch(`${baseUrl}States`)
         .then(response => response.json())
-        .then(states => dispatch({ type: 'RECEIVE_STATES', states: states.value }));
+        .then(states => dispatch({ type: 'RECEIVE_STATES', states: states }));
 };
 
 export const fetchDepartmentDBs =
     (dispatch: (action: KnownAction) => void, searchTxt: string) => {
-        let nameFilter = `$filter=startswith(Name, '${searchTxt}')&`;
-        let reqTxt = `${baseUrl}DepartmentDBs?${searchTxt && nameFilter}$expand=Department,Institutions`;
+        // let nameFilter = `$filter=startswith(Name, '${searchTxt}')&`;
+        // let reqTxt = `${baseUrl}DepartmentDBs?${searchTxt && nameFilter}$expand=Department,Institutions`;
+        let reqTxt = `${baseUrl}DepartmentDBs`;
 
         fetch(reqTxt)
             .then(response => response.json())
             .then(depts => {
-                let deptsArr: DepartmentDB[] = depts.value;
+                // let deptsArr: DepartmentDB[] = depts.value;
 
-                deptsArr.forEach((d: DepartmentDB) => {
-                    d.Pct = d.Institutions.length === 0 ? 0 :
-                        (d.Institutions.filter(x => x.RSSDID).length / d.Institutions.length);
-                });
+                // deptsArr.forEach((d: DepartmentDB) => {
+                //     d.Pct = d.Institutions.length === 0 ? 0 :
+                //         (d.Institutions.filter(x => x.RSSDID).length / d.Institutions.length);
+                // });
 
-                let activeDeptDB = depts.value[0];
+                let activeDeptDB = depts && depts.length > 0 ? depts[0] : null;
 
-                dispatch({ type: 'RECEIVE_DEPARTMENTDBS', searchTxt: searchTxt, departmentDBs: depts.value });
+                dispatch({ type: 'RECEIVE_DEPARTMENTDBS', searchTxt: searchTxt, departmentDBs: depts });
                 dispatch({ type: 'SELECT_DEPTDB', activeDeptDB });
             });
     };

@@ -16,6 +16,11 @@ import {
 // import { blueGrey500 } from 'material-ui/styles/colors';
 import registerServiceWorker from './registerServiceWorker';
 import StoreContainer from './containers/StoreContainer';
+// import
+// FederalInstitutionSearchContainer
+//   from './components/FederalInstitutionSearchContainer';
+
+import 'antd/dist/antd.css';
 // import * as injectTapEventPlugin from 'react-tap-event-plugin';
 // injectTapEventPlugin();
 

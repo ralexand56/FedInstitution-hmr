@@ -8,6 +8,7 @@ process.on('unhandledRejection', err => {
 });
 
 process.env.NODE_ENV = 'development';
+process.env.HTTPS = false;
 
 // Ensure environment variables are read.
 require('../config/env');

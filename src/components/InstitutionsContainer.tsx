@@ -137,15 +137,15 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
             institutionFilter,
             institutionTotalCnt,
             institutionTypes,
-            selectedInstitutionIDs,
+            selectedCustomIDs,
             states,
          } = this.props;
 
-        let arr: number[] = [];
+        let arr: string[] = [];
 
-        if (typeof (selectedInstitutionIDs) !== 'string') {
-            arr = selectedInstitutionIDs;
-        }
+        // if (typeof (selectedCustomIDs) !== 'string') {
+        arr = selectedCustomIDs;
+        // }
 
         return (
             <Paper style={styles.mainContainer} zDepth={2}>
@@ -159,7 +159,7 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
                         )}
                     </ToolbarGroup>
                     <ToolbarGroup>
-                        <ToolbarTitle text={`Selection: ${selectedInstitutionIDs.length}`} />
+                        <ToolbarTitle text={`Selection: ${selectedCustomIDs.length}`} />
                     </ToolbarGroup>
                 </Toolbar>
                 <Toolbar style={{ height: 35, fontSize: 20 }}>
@@ -278,7 +278,6 @@ export class InstitutionsContainer extends Component<InstitutionsProps, AppState
                     >
                         {activeInstitutions && (activeInstitutions.map((i, ind) => (
                             <TableRow
-                                selected={arr.indexOf(ind) !== -1}
                                 style={styles.td}
                                 key={i.CustomID}
                             >

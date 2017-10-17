@@ -4,95 +4,90 @@ import {
 } from '../services/data-types';
 import {
     Card,
+    Icon,
     Layout,
-    Input,
-    Switch,
+    Menu,
+    Tooltip,
 } from 'antd';
 import * as actions from '../actions/FederalInstitutionActions';
+
+import FederalInstitutionSearchContainer from './FederalInstitutionSearchContainer';
 
 type Props = FederalInstitutionState &
     typeof actions.actionCreators;
 
 // const Option = Select.Option;
-const Header = Layout.Header;
 const Content = Layout.Content;
-const Search = Input.Search;
+const labelStyle = {
+    width: '30%',
+    textAlign: 'right',
+    padding: 3,
+};
+
+const contentStyle = {
+    width: '70%',
+    textAlign: 'left',
+    padding: 3,
+};
+
+// const menuStyle = {
+//     width: '100%',
+//     textAlign: 'right',
+//     padding: 3,
+// };
 
 const FederalInstitutionList = ({
+    assignFed,
     fedInstitutions,
     fedInstitutionFilter,
     setFedInstitutionFilter,
     updateFedInstitutionFilter,
- }: Props) => {
+}: Props) => {
+    let fedUrl = `https://www.ffiec.gov/nicpubweb/nicweb/InstitutionProfile.aspx?parID_Rssd=`;
+
     return (
         <Layout style={{ height: 300 }}>
-            <Header
-                style={
-                    {
-                        alignItems: 'center',
-                        color: 'white',
-                        display: 'flex',
-                        padding: 10,
-                    }
-                }
-            >
-                <h2 style={{ color: 'white' }}>Federal Institutions</h2>
-                <span
-                    style={{ margin: '0 10px' }}
-                >
-                    <Search
-                        style={{ width: 200, }}
-                        placeholder="...search name"
-                        onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                            updateFedInstitutionFilter({
-                                ...fedInstitutionFilter, searchTxt: e.currentTarget.value
-                            })
-                        }
-                        onSearch={
-                            (value: string) =>
-                                setFedInstitutionFilter({ ...fedInstitutionFilter, searchTxt: value.trim() })}
-                    />
-                    <span style={{ margin: '0 10px' }}>
-                        {fedInstitutionFilter.isStartsWith ? 'starts with' : 'contains'}
-                    </span>
-                    <Switch
-                        checked={fedInstitutionFilter.isStartsWith}
-                        onChange={
-                            (e) => setFedInstitutionFilter({ ...fedInstitutionFilter, isStartsWith: e })}
-                    />
-                </span>
-                <span>...search holding company name
-                    <Switch
-                        checked={fedInstitutionFilter.searchHoldingCompanies}
-                        onChange={
-                            (e) => setFedInstitutionFilter({ ...fedInstitutionFilter, searchHoldingCompanies: e })}
-                    />
-                </span>
-                <Search
-                    style={{ width: 100, margin: 10 }}
-                    placeholder="...search RSSDID"
-                    onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                        updateFedInstitutionFilter({
-                            ...fedInstitutionFilter, RSSDID: parseInt(e.currentTarget.value, 10) || undefined
-                        })
-                    }
-                    onSearch={(value: string) =>
-                        setFedInstitutionFilter({
-                            ...fedInstitutionFilter, RSSDID: parseInt(value.trim(), 10) || undefined
-                        })}
-                />
-                <span style={{ margin: '0 10px' }}>
-                    Count | {fedInstitutions.length}
-                </span>
-            </Header>
+          <FederalInstitutionSearchContainer />
             <Content style={{ overflowX: 'auto', whiteSpace: 'nowrap' } as React.CSSProperties}>
                 {
                     fedInstitutions && fedInstitutions.map(f =>
                         <Card
                             key={f.RSSDID}
                             style={{ display: 'inline-block', margin: '10px 5px', width: 300, height: 200 }}
-                            title={f.Name}
-                        />
+                            title={
+                                <span>
+                                    <Tooltip placement="topLeft" title={f.FullName}>
+                                        {f.Name}
+                                    </Tooltip>
+                                </span>}
+                            extra={
+                                <Menu
+                                    mode="inline"
+                                    inlineCollapsed={true}
+                                    onClick={() => assignFed(f)}
+                                    style={{ padding: 3, textAlign: 'right' }}
+                                    theme="dark"
+                                >
+                                    <Menu.Item
+                                        key="lock"
+                                    >
+                                        <Icon type="lock" />
+                                        <span>Link</span>
+                                    </Menu.Item>
+                                </Menu>}
+                        >
+                            <Card.Grid style={labelStyle}>RSSDID</Card.Grid>
+                            <Card.Grid style={contentStyle}>
+                                <a
+                                    target="_blank"
+                                    href={`${fedUrl}${f.RSSDID}&parDT_END=99991231`}
+                                >
+                                    {f.RSSDID}
+                                </a>
+                            </Card.Grid>
+                            <Card.Grid style={labelStyle}>TYPE</Card.Grid>
+                            <Card.Grid style={contentStyle}>{f.FederalEntityType.Name}</Card.Grid>
+                        </Card>
                     )
                 }
             </Content>

@@ -9,6 +9,7 @@ import {
     Select,
     Table,
     Input,
+    Tooltip,
 } from 'antd';
 import * as actions from '../actions/InstitutionActions';
 
@@ -35,6 +36,13 @@ const columns = [
         title: 'Region',
         dataIndex: 'Region',
         key: 'Region',
+        render: (txt: string) => (
+            <span>
+                <Tooltip placement="topLeft" title={txt}>
+                    {txt.substr(0, 50)}
+                </Tooltip>    
+            </span>
+        )
     },
     {
         title: 'Type',
@@ -58,22 +66,22 @@ const columns = [
     },
 ];
 
-export const InstitutionList: React.SFC<Props> =
+export const InstitutionList =
     ({
         activeDeptDB,
         activeInstitutions,
         assignmentOptions,
         institutionFilter,
         setInstitutionFilter,
-        selectedInstitutionIDs,
+        selectedCustomIDs,
         states,
         updateInstitutionFilter,
         updateInstitutionSelection,
-     }) => {
+     }: Props) => {
 
         let rowSelection = {
-            selectedRowKeys: selectedInstitutionIDs,
-            onChange: (keys: number[]) => updateInstitutionSelection(keys),
+            selectedRowKeys: selectedCustomIDs,
+            onChange: (keys: string[]) => updateInstitutionSelection(keys),
         };
 
         return (
@@ -121,17 +129,21 @@ export const InstitutionList: React.SFC<Props> =
                         }
                         style={{ width: 200, margin: '0 10px' }}
                     >
-                        {renderStates(states)}
+                        {states && renderStates(states)}
                     </Select>
                     <span style={{ margin: '0 10px' }}>
                         Count | {activeInstitutions.length}
+                    </span>
+                    <span style={{ margin: '0 10px' }}>
+                        Selected | {selectedCustomIDs.length}
                     </span>
                 </Header>
                 <Content>
                     <Table
                         columns={columns}
                         dataSource={activeInstitutions}
-                        rowKey={'InstitutionID'}
+                        rowKey={'CustomID'}
+                        size="small"
                         rowSelection={rowSelection}
                     />
                 </Content>

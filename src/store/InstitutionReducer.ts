@@ -18,12 +18,28 @@ const unloadedState: InstitutionState = {
     },
     institutionTotalCnt: 0,
     institutionTypes: [],
-    selectedInstitutionIDs: [],
+    selectedCustomIDs: [],
     states: [],
 };
 
 export const reducer: Reducer<InstitutionState> = (state: InstitutionState, action: KnownAction) => {
     switch (action.type) {
+        case 'ASSIGN_FEDINSTITUTION':
+            const fedInst = action.fedInst;
+            const customIDs = state.selectedCustomIDs;
+            const activeInsts = state.activeInstitutions.slice();
+
+            customIDs.map(x => {
+                const i = activeInsts.filter(y => y.CustomID === x)[0];
+
+                i.RSSDID = fedInst.RSSDID;
+                i.FederalInstitution = fedInst;
+            });
+
+            return {
+                ...state,
+                activeInstitutions: activeInsts,
+            };
 
         case 'RECEIVE_INSTITUTIONS':
 
@@ -77,7 +93,7 @@ export const reducer: Reducer<InstitutionState> = (state: InstitutionState, acti
                 ...state,
                 activeDeptDB: action.activeDeptDB,
                 institutionFilter: {
-                    ...unloadedState.institutionFilter, 
+                    ...unloadedState.institutionFilter,
                     deptDBID: action.activeDeptDB ? action.activeDeptDB.DeptDBID : null,
                 },
                 activeInstitutions: [],
@@ -94,7 +110,7 @@ export const reducer: Reducer<InstitutionState> = (state: InstitutionState, acti
 
             return {
                 ...state,
-                selectedInstitutionIDs: action.indices,
+                selectedCustomIDs: action.indices,
             };
 
         default:

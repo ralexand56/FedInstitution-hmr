@@ -42,7 +42,7 @@ export const actionCreators = {
         });
     },
 
-    updateInstitutionSelection: (indices: number[]) => {
+    updateInstitutionSelection: (indices: string[]) => {
         return {
             type: 'UPDATE_INSTITUTION_SELECTION', indices: indices
         };

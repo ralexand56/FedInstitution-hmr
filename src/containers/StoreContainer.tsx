@@ -3,7 +3,6 @@ import { Component } from 'react';
 import InstitutionsContainer from './InstitutionsContainer';
 import DepartmentDBsContainer from './DepartmentDBsContainer';
 import FederalInstitutionsContainer from './FederalInstitutionsContainer';
-import 'antd/dist/antd.css';
 import {
     Button,
     Layout,
