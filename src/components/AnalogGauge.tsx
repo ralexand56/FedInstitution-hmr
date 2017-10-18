@@ -56,7 +56,7 @@ interface AnalogProps {
 // };
 
 const renderGauges = (num: number, value: number) => {
-    let gauges = [];
+    // let gauges = [];
 
     // for (let i = 0; i < num; i++) {
     //     gauges.push(
@@ -68,7 +68,8 @@ const renderGauges = (num: number, value: number) => {
     //     );
     // }
 
-    return gauges;
+    // return gauges;
+    return null;
 };
 
 export const AnalogGauge = (props: AnalogProps) => {

@@ -10,13 +10,19 @@ import {
     Tooltip,
 } from 'antd';
 import * as actions from '../actions/FederalInstitutionActions';
+import styled from 'styled-components';
 
 import FederalInstitutionSearchContainer from './FederalInstitutionSearchContainer';
+
+const MainContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+`;
 
 type Props = FederalInstitutionState &
     typeof actions.actionCreators;
 
-// const Option = Select.Option;
 const Content = Layout.Content;
 const labelStyle = {
     width: '30%',
@@ -42,13 +48,7 @@ const miniContentStyle = {
     padding: 3,
 };
 
-// const menuStyle = {
-//     width: '100%',
-//     textAlign: 'right',
-//     padding: 3,
-// };
-
-const FederalInstitutionList = ({
+const FederalInstitutions = ({
     assignFed,
     fedInstitutions,
     fedInstitutionFilter,
@@ -59,7 +59,7 @@ const FederalInstitutionList = ({
     let fedUrl = `https://www.ffiec.gov/nicpubweb/nicweb/InstitutionProfile.aspx?parID_Rssd=`;
 
     return (
-        <Layout style={{ height: 300 }}>
+        <MainContainer>
             <FederalInstitutionSearchContainer />
             <Content style={{ overflowX: 'auto', whiteSpace: 'nowrap' } as React.CSSProperties}>
                 {
@@ -122,8 +122,8 @@ const FederalInstitutionList = ({
                     )
                 }
             </Content>
-        </Layout>
+        </MainContainer>
     );
 };
 
-export default FederalInstitutionList;
+export default FederalInstitutions;

@@ -36,6 +36,7 @@ export interface FederalInstitutionState {
 export type KnownAction =
     AssignFederalInstitutionAction |
     InitAction |
+    HideDepartmentVisibilityAction |
     ReceiveInstitutionTypesAction |
     ReceiveDepartmentDBsAction |
     ReceiveFedInstitutionsAction |
@@ -61,6 +62,10 @@ export interface AssignFederalInstitutionAction {
 
 export interface InitAction {
     type: 'INIT';
+}
+
+export interface HideDepartmentVisibilityAction {
+    type: 'HIDE_DEPTDBS';
 }
 
 export interface RequestDepartmentDBsAction {

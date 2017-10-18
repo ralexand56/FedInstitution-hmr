@@ -8,16 +8,16 @@ import {
     InstitutionState,
 } from '../services/data-types';
 import * as actions from '../actions/InstitutionActions';
-import Institutions from './Institutions';
+import InstitutionSearchHeader from './InstitutionSearchHeader';
 
 type Props = InstitutionState &
     typeof actions.actionCreators;
 
-class InstitutionsContainer extends Component<Props, {}> {
+class InstitutionSearchHeaderContainer extends Component<Props, {}> {
 
     render() {
         return (
-            <Institutions {...this.props} />
+            <InstitutionSearchHeader {...this.props} />
         );
     }
 }
@@ -25,4 +25,4 @@ class InstitutionsContainer extends Component<Props, {}> {
 export default connect(
     (state: ApplicationState) => state.institutionSlice,
     actions.actionCreators
-)(InstitutionsContainer);
+)(InstitutionSearchHeaderContainer);

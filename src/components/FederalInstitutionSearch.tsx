@@ -18,10 +18,7 @@ const MainContainer = styled.div`
     background: brown;
     padding: 10px;
     color: white;
-    font-family: Arial;
-    font-weight: normal;
-    font-size: 1.1em;
-    box-shadow: 0px 1px 1px #666;
+    box-shadow: 0px 2px 2px #666;
 `;
 
 interface Props {
@@ -39,7 +36,7 @@ const FederalInstitutionSearch = (
         setFedInstitutionFilter }: Props) => {
     return (
         <MainContainer>
-            <h2 style={{ color: 'white' }}>Federal Institutions</h2>
+            <h3 style={{ color: 'white' }}>Federal Institutions</h3>
             <span
                 style={{ margin: '0 10px' }}
             >
