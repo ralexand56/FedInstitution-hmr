@@ -9,7 +9,7 @@ import {
 const assignFed = async (entityName: string, customID: string, rssDID: number) => {
     const inst = await fetch(`${baseUrl}${entityName}/${customID}`);
     const foundInst = await inst.json();
-    
+
     foundInst.RSSDID = rssDID;
 
     const updatedInst = await fetch(`${baseUrl}${entityName}/${customID}`, {
@@ -24,6 +24,47 @@ const assignFed = async (entityName: string, customID: string, rssDID: number) =
     return updatedInst;
 };
 
+const unassignFedDB = async (entityName: string, customID: string) => {
+    const inst = await fetch(`${baseUrl}${entityName}/${customID}`);
+    const foundInst = await inst.json();
+
+    foundInst.RSSDID = null;
+
+    const updatedInst = await fetch(`${baseUrl}${entityName}/${customID}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        method: 'put',
+        body: JSON.stringify(foundInst)
+    });
+
+    return updatedInst;
+};
+
+export const unassignFed = (dispatch: (action: KnownAction, ) => void, deptDBID: number, instID: string) => {
+
+    switch (deptDBID) {
+        case 6:
+            unassignFedDB('FZInstMasters', instID)
+                .then(resp => dispatch({ type: 'SELECT_NONE' }));
+            break;
+
+        case 7:
+            unassignFedDB('FZInstMastersSweeps', instID)
+                .then(resp => dispatch({ type: 'SELECT_NONE' }));
+            break;
+
+        case 8:
+            unassignFedDB('INS_Institutions', instID)
+                .then(resp => dispatch({ type: 'SELECT_NONE' }));
+            break;
+
+        default:
+            break;
+    }
+};
+
 export const assignFedByDeptDB = (
     dispatch: (action: KnownAction) => void,
     deptDBID: number, rssDID: number, instID: string) => {
@@ -31,11 +72,18 @@ export const assignFedByDeptDB = (
 
     switch (deptDBID) {
         case 6:
-            assignFed('FZInstMasters', instID, rssDID);
+            assignFed('FZInstMasters', instID, rssDID)
+                .then(resp =>  dispatch({type: 'SELECT_NONE'}));
+            break;
+
+        case 7:
+            assignFed('FZInstMastersSweeps', instID, rssDID)
+                .then(resp => dispatch({ type: 'SELECT_NONE' }));
             break;
 
         case 8:
-            assignFed('INS_Institutions', instID, rssDID);
+            assignFed('INS_Institutions', instID, rssDID)
+                .then(resp => dispatch({ type: 'SELECT_NONE' }));
             break;
 
         case 1:

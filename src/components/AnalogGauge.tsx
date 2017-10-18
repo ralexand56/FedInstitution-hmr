@@ -28,45 +28,45 @@ interface AnalogProps {
     value: number;
 }
 
-const GaugeItem = (props: { ind: number, value: number }) => {
-    let { ind, value } = props;
-    let activeColor = 'red';
+// const GaugeItem = (props: { ind: number, value: number }) => {
+//     let { ind, value } = props;
+//     let activeColor = 'red';
 
-    if (value > 30 && value < 80) {
-        activeColor = 'yellow';
-    } else if (value >= 80) {
-        activeColor = 'green';
-    } else {
-        activeColor = 'red';
-    }
+//     if (value > 30 && value < 80) {
+//         activeColor = 'yellow';
+//     } else if (value >= 80) {
+//         activeColor = 'green';
+//     } else {
+//         activeColor = 'red';
+//     }
 
-    return (
-        <div
-            style={
-                {
-                    height: 5,
-                    backgroundColor: (value >= (10 - ind) * 10) ? activeColor : 'black',
-                    width: 40,
-                    borderRadius: 1,
-                    marginTop: 3,
-                } as React.CSSProperties
-            }
-        />
-    );
-};
+//     return (
+//         <div
+//             style={
+//                 {
+//                     height: 5,
+//                     backgroundColor: (value >= (10 - ind) * 10) ? activeColor : 'black',
+//                     width: 40,
+//                     borderRadius: 1,
+//                     marginTop: 3,
+//                 } as React.CSSProperties
+//             }
+//         />
+//     );
+// };
 
 const renderGauges = (num: number, value: number) => {
     let gauges = [];
 
-    for (let i = 0; i < num; i++) {
-        gauges.push(
-            <GaugeItem
-                key={i}
-                ind={i}
-                value={value}
-            />
-        );
-    }
+    // for (let i = 0; i < num; i++) {
+    //     gauges.push(
+    //         <GaugeItem
+    //             key={i}
+    //             ind={i}
+    //             value={value}
+    //         />
+    //     );
+    // }
 
     return gauges;
 };

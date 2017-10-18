@@ -30,6 +30,18 @@ const contentStyle = {
     padding: 3,
 };
 
+const miniLabelStyle = {
+    width: '20%',
+    textAlign: 'right',
+    padding: 3,
+};
+
+const miniContentStyle = {
+    width: '30%',
+    textAlign: 'left',
+    padding: 3,
+};
+
 // const menuStyle = {
 //     width: '100%',
 //     textAlign: 'right',
@@ -41,13 +53,14 @@ const FederalInstitutionList = ({
     fedInstitutions,
     fedInstitutionFilter,
     setFedInstitutionFilter,
+    selectedCustomIDs,
     updateFedInstitutionFilter,
 }: Props) => {
     let fedUrl = `https://www.ffiec.gov/nicpubweb/nicweb/InstitutionProfile.aspx?parID_Rssd=`;
 
     return (
         <Layout style={{ height: 300 }}>
-          <FederalInstitutionSearchContainer />
+            <FederalInstitutionSearchContainer />
             <Content style={{ overflowX: 'auto', whiteSpace: 'nowrap' } as React.CSSProperties}>
                 {
                     fedInstitutions && fedInstitutions.map(f =>
@@ -69,6 +82,7 @@ const FederalInstitutionList = ({
                                     theme="dark"
                                 >
                                     <Menu.Item
+                                        disabled={selectedCustomIDs.length === 0}    
                                         key="lock"
                                     >
                                         <Icon type="lock" />
@@ -76,8 +90,8 @@ const FederalInstitutionList = ({
                                     </Menu.Item>
                                 </Menu>}
                         >
-                            <Card.Grid style={labelStyle}>RSSDID</Card.Grid>
-                            <Card.Grid style={contentStyle}>
+                            <Card.Grid style={miniLabelStyle}>RSSDID</Card.Grid>
+                            <Card.Grid style={miniContentStyle}>
                                 <a
                                     target="_blank"
                                     href={`${fedUrl}${f.RSSDID}&parDT_END=99991231`}
@@ -85,8 +99,25 @@ const FederalInstitutionList = ({
                                     {f.RSSDID}
                                 </a>
                             </Card.Grid>
+                            <Card.Grid style={miniLabelStyle}>State</Card.Grid>
+                            <Card.Grid style={miniContentStyle}>
+                                {f.StateCode}
+                            </Card.Grid>
                             <Card.Grid style={labelStyle}>TYPE</Card.Grid>
                             <Card.Grid style={contentStyle}>{f.FederalEntityType.Name}</Card.Grid>
+                            <Card.Grid style={labelStyle}>ASSIGNED</Card.Grid>
+                            <Card.Grid style={contentStyle}>{f.Institutions.length}</Card.Grid>
+                            <Card.Grid style={labelStyle}>TOTAL ASSETS</Card.Grid>
+                            <Card.Grid style={contentStyle}>{f.TotalAssets ? f.TotalAssets : 'N/A'}</Card.Grid>
+                            <Card.Grid style={labelStyle}>WEBSITE</Card.Grid>
+                            <Card.Grid style={contentStyle}>
+                                <a
+                                    target="_blank"
+                                    href={f.Url && f.Url.startsWith('http') ? f.Url : `http://${f.Url}`}
+                                >
+                                    {f.Url}
+                                </a>
+                            </Card.Grid>
                         </Card>
                     )
                 }

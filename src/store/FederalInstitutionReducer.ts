@@ -16,6 +16,7 @@ const unloadedState: FederalInstitutionState = {
         selectedStates: [''],
         selectedTypes: [''],
     },
+    selectedCustomIDs: [],
     fedInstitutionsLoading: false,
     fedInstitutionTypes: [],
     states: [],
@@ -65,6 +66,13 @@ export const reducer: Reducer<FederalInstitutionState> = (state: FederalInstitut
             return {
                 ...state,
                 fedInstitutionFilter: action.fedInstitutionFilter,
+            };
+
+        case 'UPDATE_INSTITUTION_SELECTION':
+
+            return {
+                ...state,
+                selectedCustomIDs: action.indices,
             };
 
         default:

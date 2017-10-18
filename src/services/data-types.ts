@@ -1,7 +1,7 @@
-import { FederalInstitution, DepartmentDB } from './data-types';
+import { FederalInstitution, DepartmentDB, UnAssignFederalInstitutionAction } from './data-types';
 // export const baseUrl = `https://dev.informars.com/webservices/FedSvc/odata/`;
-export const baseUrl = `http://localhost:58085/api/`;
-// export const baseUrl = `http://usca-itdev/webservices/fedapi/api/`;
+// export const baseUrl = `http://localhost:58085/api/`;
+export const baseUrl = `http://usca-itdev/webservices/fedapi/api/`;
 
 export interface DepartmentDBState {
     activeDeptDB: DepartmentDB | null;
@@ -29,6 +29,7 @@ export interface FederalInstitutionState {
     fedInstitutionFilter: FedInstitutionFilter;
     fedInstitutionTypes: FederalEntityType[];
     fedInstitutionsLoading: boolean;
+    selectedCustomIDs: string[];
     states: Array<State>;
 }
 
@@ -50,6 +51,7 @@ export type KnownAction =
     SelectDeptDBAction |
     SelectNoneAction |
     ToggleDepartmentVisiblityAction |
+    UnAssignFederalInstitutionAction |
     UpdateInstitutionSelection;
 
 export interface AssignFederalInstitutionAction {
@@ -133,6 +135,10 @@ export interface SelectDeptDBAction {
     activeDeptDB: DepartmentDB;
 }
 
+export interface UnAssignFederalInstitutionAction {
+    type: 'UNASSIGN_FEDINSTITUTION';
+}
+
 export interface UpdateInstitutionSelection {
     type: 'UPDATE_INSTITUTION_SELECTION';
     indices: string[];
@@ -179,8 +185,9 @@ export interface Institution {
     RSSDID?: number;
     HCID: number;
     DeptDBID: number;
-    FederalInstitution: FederalInstitution;
+    FederalInstitution?: FederalInstitution;
     IsSelected: boolean;
+    IsAssigned: boolean;
 }
 
 export interface InstitutionType {
@@ -221,6 +228,7 @@ export interface FederalInstitution {
     FederalEntityType: FederalEntityType;
     Institutions: Institution[];
     HoldingCompany: FederalInstitution;
+    TotalAssets: number;
 }
 
 export interface FederalInstitutionCount {

@@ -15,7 +15,8 @@ import {
 // import getMuiTheme from 'material-ui/styles/getMuiTheme';
 // import { blueGrey500 } from 'material-ui/styles/colors';
 import registerServiceWorker from './registerServiceWorker';
-import StoreContainer from './containers/StoreContainer';
+import HomeContainer from './components/HomeContainer';
+// import StoreContainer from './containers/StoreContainer';
 // import
 // FederalInstitutionSearchContainer
 //   from './components/FederalInstitutionSearchContainer';
@@ -47,7 +48,7 @@ let render = () => {
     (
       <AppContainer>
         <Provider store={store}>
-          <StoreContainer />
+          <HomeContainer />
         </Provider>
       </AppContainer>
     ),

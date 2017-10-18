@@ -7,6 +7,7 @@ import {
 import {
     fetchFederalInstitutions,
     fetchInstitutions,
+    unassignFed,
 } from './FetchActions';
 
 export const actionCreators = {
@@ -41,6 +42,27 @@ export const actionCreators = {
             type: 'SELECT_NONE'
         });
     },
+
+    unassignFed: ():
+        AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
+            dispatch({
+                type: 'UNASSIGN_FEDINSTITUTION',
+            });
+
+            const instIDs = getState().institutionSlice.selectedCustomIDs;
+            const activeDBID = getState().departmentDBSlice.activeDeptDB!.DeptDBID;
+
+            instIDs.forEach(i => {
+
+                unassignFed(
+                    dispatch,
+                    activeDBID,
+                    i);
+            });
+            // console.dir(fedInst);
+            // if (typeof (instIDs) !== 'string') {
+            // updateModifiedDate(deptDBID);
+        },
 
     updateInstitutionSelection: (indices: string[]) => {
         return {

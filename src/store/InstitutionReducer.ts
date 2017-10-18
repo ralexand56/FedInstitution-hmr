@@ -84,7 +84,7 @@ export const reducer: Reducer<InstitutionState> = (state: InstitutionState, acti
 
             return {
                 ...state,
-                selectedInstitutionIndices: [],
+                selectedCustomIDs: [],
             };
 
         case 'SELECT_DEPTDB':
@@ -104,6 +104,22 @@ export const reducer: Reducer<InstitutionState> = (state: InstitutionState, acti
             return {
                 ...state,
                 institutionFilter: action.institutionFilter,
+            };
+
+        case 'UNASSIGN_FEDINSTITUTION':
+            const selectedCustomIDs = state.selectedCustomIDs;
+            const activeInstsU = state.activeInstitutions.slice();
+
+            selectedCustomIDs.map(x => {
+                const i = activeInstsU.filter(y => y.CustomID === x)[0];
+
+                i.RSSDID = undefined;
+                i.FederalInstitution = undefined;
+            });
+
+            return {
+                ...state,
+                activeInstitutions: activeInstsU,
             };
 
         case 'UPDATE_INSTITUTION_SELECTION':
