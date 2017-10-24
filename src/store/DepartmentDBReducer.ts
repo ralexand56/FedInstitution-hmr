@@ -9,7 +9,7 @@ const unloadedState: DepartmentDBState = {
     departmentDBs: [],
     deptDBsLoading: false,
     searchTxt: '',
-    showDeptDBs: true,
+    showDeptDBs: false,
 };
 
 export const reducer: Reducer<DepartmentDBState> = (state: DepartmentDBState, action: KnownAction) => {

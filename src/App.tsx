@@ -8,7 +8,7 @@ import AppBar from 'material-ui/AppBar';
 //   DepartmentDBState,
 // } from './services/data-types';
 // import * as DepartmentDBStore from './store/DepartmentDBReducer';
-import DepartmentDBsContainer from './components/DepartmentDBsContainer';
+// import DepartmentDBsContainer from './components/DepartmentDBsContainer';
 // import FederalInstitutionsContainer from './components/FederalInstitutionsContainer';
 import InstitutionsContainer from './components/InstitutionsContainer';
 // import MenuItem from 'material-ui/MenuItem';
@@ -103,8 +103,6 @@ export const App = () => {
           <div style={styles.bodyContainer}>
             <InstitutionsContainer />
           </div>
-
-          <DepartmentDBsContainer />
         </div>
       </div>
     );

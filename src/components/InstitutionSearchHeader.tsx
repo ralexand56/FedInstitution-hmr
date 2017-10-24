@@ -6,6 +6,7 @@ import {
 } from '../services/data-types';
 import {
     Button,
+    Icon,
     Input,
     Select,
     Tooltip,
@@ -28,8 +29,11 @@ const MainContainer = styled.div`
     padding: 10px;
     color: white;
     font-weight: normal;
-    box-shadow: 0px 2px 2px #666;
+    box-shadow: 0px 0px 2px black;
     margin-bottom: 3px;
+    > h3 {
+        color: white
+    }
 `;
 
 const InstitutionSearchHeader = (
@@ -46,7 +50,8 @@ const InstitutionSearchHeader = (
 }: Props) => {
     return (
         <MainContainer>
-            <h3 style={{ color: 'white', textTransform: 'uppercase' } as React.CSSProperties}>
+            <h3>
+                <Icon type="home" style={{margin: 5}} /> 
                 {activeDeptDB && activeDeptDB.Name}
                 <small> | {activeDeptDB && activeDeptDB.Department.Name}
                 </small>
@@ -79,7 +84,7 @@ const InstitutionSearchHeader = (
                     (val: string[]) =>
                         handleSelectedStateChanged(val, institutionFilter, setInstitutionFilter)
                 }
-                style={{ width: 200, margin: '0 10px' }}
+                style={{ width: 100, margin: '0 10px' }}
             >
                 {states && renderStates(states)}
             </Select>
@@ -90,7 +95,7 @@ const InstitutionSearchHeader = (
                 Selected | {selectedCustomIDs.length}
             </span>
             <span style={{ margin: '0 10px' }}>
-                <Tooltip title="Unassign selected Institutions" >
+                <Tooltip title="Unassign Selected Institutions" >
                     <Button
                         disabled={selectedCustomIDs.length === 0}
                         type="primary"

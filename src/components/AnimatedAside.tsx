@@ -4,13 +4,14 @@ import { Button } from 'antd';
 
 const styles = {
     aside: {
-        boxShadow: '-3px 0px 5px',
+        boxShadow: '0px 0px 2px black',
         top: 0,
         right: 0,
         bottom: 0,
         overflowY: 'hidden',
         padding: 10,
         position: 'absolute',
+        zIndex: 2,
     } as React.CSSProperties
 };
 
@@ -41,7 +42,7 @@ const AnimatedAside = (props: { isOn: boolean, toggle: () => void, children?: {}
                             background: bgColor || '#666666'
                         }}
                     >
-                        <Button onClick={toggle} ghost={true}>X</Button>
+                        <Button style={{marginBottom: 5}} onClick={toggle} ghost={true}>X</Button>
                         {props.children}
                     </div>
             }

@@ -68,6 +68,13 @@ export const reducer: Reducer<FederalInstitutionState> = (state: FederalInstitut
                 fedInstitutionFilter: action.fedInstitutionFilter,
             };
 
+        case 'SELECT_NONE':
+
+            return {
+                ...state,
+                selectedCustomIDs: [],
+            };
+
         case 'UPDATE_INSTITUTION_SELECTION':
 
             return {

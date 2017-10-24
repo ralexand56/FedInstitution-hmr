@@ -1,8 +1,10 @@
 import React from 'react';
 import { Component } from 'react';
 import styled from 'styled-components';
+import AnimatedAsideContainer from './AnimatedAsideContainer';
 import InstitutionsContainer from './InstitutionsContainer';
 import FederalInstitutionsContainer from './FederalInstitutionsContainer';
+import MainHeaderContainer from './MainHeaderContainer';
 
 const MainContainer = styled.div`
     display: flex;
@@ -17,8 +19,10 @@ export default class HomeContainer extends Component<{}, {}> {
     render() {
         return (
             <MainContainer>
+                <MainHeaderContainer />
                 <InstitutionsContainer />
                 <FederalInstitutionsContainer />
+                <AnimatedAsideContainer />
             </MainContainer>
         );
     }

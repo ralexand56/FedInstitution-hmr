@@ -1,10 +1,10 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Federal Manager",
+  "name": "Informa Federal Institution Manager",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "192x192",
+      "sizes": "100x138",
       "type": "image/png"
     }
   ],

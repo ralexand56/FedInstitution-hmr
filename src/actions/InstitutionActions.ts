@@ -43,6 +43,10 @@ export const actionCreators = {
         });
     },
 
+    toggleDepartmentVisibility: () => ({
+        type: 'TOGGLE_DEPARTMENT_VISIBILITY',
+    }),
+
     unassignFed: ():
         AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
             dispatch({

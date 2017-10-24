@@ -10,6 +10,7 @@ import {
 import * as actions from '../actions/InstitutionActions';
 import styled from 'styled-components';
 import InstitutionSearchHeaderContainer from './InstitutionSearchHeaderContainer';
+import Loader from './Loader';
 
 const MainContainer = styled.div`
     flex: 1;
@@ -77,6 +78,7 @@ export const Institutions = ({
     activeInstitutions,
     assignmentOptions,
     institutionFilter,
+    institutionsLoading,
     setInstitutionFilter,
     selectedCustomIDs,
     states,
@@ -93,14 +95,19 @@ export const Institutions = ({
     return (
         <MainContainer>
             <InstitutionSearchHeaderContainer />
-            <Table
-                pagination={{ pageSize: 50, total: activeInstitutions.length }}
-                columns={columns}
-                dataSource={activeInstitutions}
-                rowKey={'CustomID'}
-                size="small"
-                rowSelection={rowSelection}
-            />
+            {
+                institutionsLoading 
+                    ? <Loader />
+                    : <Table
+                        bordered={true}
+                        pagination={{ pageSize: 50, total: activeInstitutions.length }}
+                        columns={columns}
+                        dataSource={activeInstitutions}
+                        rowKey={'CustomID'}
+                        size="small"
+                        rowSelection={rowSelection}
+                    />
+            }
         </MainContainer>
     );
 };

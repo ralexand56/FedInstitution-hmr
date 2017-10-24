@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
+    Icon,
     Input,
     Switch,
 } from 'antd';
@@ -18,7 +19,7 @@ const MainContainer = styled.div`
     background: brown;
     padding: 10px;
     color: white;
-    box-shadow: 0px 2px 2px #666;
+    box-shadow: 0px 0px 2px black;
 `;
 
 interface Props {
@@ -36,6 +37,7 @@ const FederalInstitutionSearch = (
         setFedInstitutionFilter }: Props) => {
     return (
         <MainContainer>
+            <Icon type="global" style={{margin: 5}} />
             <h3 style={{ color: 'white' }}>Federal Institutions</h3>
             <span
                 style={{ margin: '0 10px' }}
