@@ -234,6 +234,7 @@ export interface FederalInstitution {
     Institutions: Institution[];
     HoldingCompany: FederalInstitution;
     TotalAssets: number;
+    CharterNo: number;
 }
 
 export interface FederalInstitutionCount {

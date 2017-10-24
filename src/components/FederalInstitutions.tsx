@@ -13,6 +13,11 @@ import * as actions from '../actions/FederalInstitutionActions';
 import styled from 'styled-components';
 import Loader from './Loader';
 import FederalInstitutionSearchContainer from './FederalInstitutionSearchContainer';
+import numeral from 'numeral';
+
+const fedUrl = `https://www.ffiec.gov/nicpubweb/nicweb/InstitutionProfile.aspx?parID_Rssd=`;
+const fdicUrl = 'https://research.fdic.gov/bankfind/results.html?fdic=';
+const charterUrl = 'http://mapping.ncua.gov/SingleResult.aspx?ID=';
 
 const MainContainer = styled.div`
     display: flex;
@@ -57,7 +62,6 @@ const FederalInstitutions = ({
     selectedCustomIDs,
     updateFedInstitutionFilter,
 }: Props) => {
-    let fedUrl = `https://www.ffiec.gov/nicpubweb/nicweb/InstitutionProfile.aspx?parID_Rssd=`;
 
     return (
         <MainContainer>
@@ -114,16 +118,92 @@ const FederalInstitutions = ({
                                     <Card.Grid style={labelStyle}>ASSIGNED</Card.Grid>
                                     <Card.Grid style={contentStyle}>{f.Institutions.length}</Card.Grid>
                                     <Card.Grid style={labelStyle}>TOTAL ASSETS</Card.Grid>
-                                    <Card.Grid style={contentStyle}>{f.TotalAssets ? f.TotalAssets : 'N/A'}</Card.Grid>
-                                    <Card.Grid style={labelStyle}>WEBSITE</Card.Grid>
-                                    <Card.Grid style={contentStyle}>
-                                        <a
-                                            target="_blank"
-                                            href={f.Url && f.Url.startsWith('http') ? f.Url : `http://${f.Url}`}
-                                        >
-                                            {f.Url}
-                                        </a>
+                                    <Card.Grid
+                                        style={contentStyle}
+                                    >{
+                                            f.TotalAssets
+                                                ? numeral(f.TotalAssets).format('$0,0')
+                                                : 'N/A'
+                                        }
                                     </Card.Grid>
+                                    {
+                                        f.Url
+                                            ? [
+                                                <Card.Grid
+                                                    key="label"
+                                                    style={labelStyle}
+                                                >
+                                                    WEBSITE
+                                                </Card.Grid>,
+                                                <Card.Grid
+                                                    style={contentStyle}
+                                                    key="content"
+                                                >
+                                                    <a
+                                                        target="_blank"
+                                                        href={
+                                                            f.Url
+                                                                && f.Url.startsWith('http')
+                                                                ? f.Url
+                                                                : `http://${f.Url}`
+                                                        }
+                                                    >
+                                                        {f.Url}
+                                                    </a>
+                                                </Card.Grid>
+                                            ]
+                                            : null
+                                    }
+                                    {
+                                        f.FDICID
+                                            ? (
+                                                [
+                                                    <Card.Grid
+                                                        key="label"
+                                                        style={labelStyle}
+                                                    >
+                                                        FDIC
+                                                    </Card.Grid>,
+                                                    <Card.Grid
+                                                        style={contentStyle}
+                                                        key="content"
+                                                    >
+                                                        <a
+                                                            target="_blank"
+                                                            href={`${fdicUrl}${f.FDICID}`}
+                                                        >
+                                                            {f.FDICID}
+                                                        </a>
+                                                    </Card.Grid>
+                                                ]
+                                            )
+                                            : null
+                                    }
+                                    {
+                                        f.CharterNo
+                                            ? (
+                                                [
+                                                    <Card.Grid
+                                                        key="label"
+                                                        style={labelStyle}
+                                                    >
+                                                        CHARTER NO
+                                                    </Card.Grid>,
+                                                    <Card.Grid
+                                                        key="content"
+                                                        style={contentStyle}
+                                                    >
+                                                        <a
+                                                            target="_blank"
+                                                            href={`${charterUrl}${f.CharterNo}`}
+                                                        >
+                                                            {f.CharterNo}
+                                                        </a>
+                                                    </Card.Grid>
+                                                ]
+                                            )
+                                            : null
+                                    }
                                 </Card>
                             )
                         }
